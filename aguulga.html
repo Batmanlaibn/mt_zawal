@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Асуулга — SafeSchool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#050810; --bg2:#0a0d1a; --surface:rgba(255,255,255,0.04); --surface2:rgba(255,255,255,0.07);
+      --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
+      --red:#ff3b5c; --red2:#ff6b84; --blue:#3b7fff; --blue2:#6fa3ff;
+      --teal:#00d4aa; --amber:#ffb340;
+      --text:#f0f4ff; --muted:rgba(180,195,235,0.6); --dim:rgba(100,120,170,0.35);
+      --font:'Syne',sans-serif; --body:'DM Sans',sans-serif;
+    }
+    html,body { min-height:100vh; font-family:var(--body); background:var(--bg); color:var(--text); overflow-x:hidden; }
+    .scene { position:fixed; inset:0; z-index:0; background: radial-gradient(ellipse 70% 55% at 10% 20%,rgba(255,59,92,0.09) 0%,transparent 55%), radial-gradient(ellipse 60% 50% at 90% 80%,rgba(59,127,255,0.07) 0%,transparent 50%), radial-gradient(ellipse 50% 40% at 60% 5%,rgba(0,212,170,0.06) 0%,transparent 45%), #050810; }
+    .noise { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.02; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; height:68px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(1.5rem,5vw,3.5rem); background:rgba(5,8,16,0.6); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); }
+    .nav-brand { display:flex; align-items:center; gap:11px; text-decoration:none; }
+    .brand-icon { width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,var(--red),var(--red2)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 0 18px rgba(255,59,92,0.35); }
+    .brand-name { font-family:var(--font); font-weight:800; font-size:1.05rem; }
+    .brand-name em { font-style:normal; color:var(--red2); }
+    .nav-links { display:flex; align-items:center; gap:0.2rem; list-style:none; }
+    .nav-links a { display:flex; align-items:center; gap:4px; padding:0.45rem 0.9rem; font-size:0.85rem; font-weight:500; color:var(--muted); text-decoration:none; border-radius:9px; transition:color 0.2s,background 0.2s; }
+    .nav-links a:hover { color:var(--text); background:var(--surface2); }
+    .nav-links li { position:relative; }
+    .chev { font-size:0.55rem; opacity:0.5; transition:transform 0.2s; }
+    .nav-links li.open>a .chev { transform:rotate(180deg); }
+    .dropdown { position:absolute; top:calc(100% + 12px); left:50%; transform:translateX(-50%) translateY(8px); background:rgba(8,11,28,0.98); backdrop-filter:blur(32px); border:1px solid rgba(255,59,92,0.2); border-radius:20px; padding:0.5rem; min-width:240px; box-shadow:0 32px 80px rgba(0,0,0,0.7); opacity:0; pointer-events:none; transition:all 0.22s cubic-bezier(0.22,1,0.36,1); z-index:200; }
+    .dropdown::before { content:''; position:absolute; top:-5px; left:50%; transform:translateX(-50%); width:10px; height:10px; background:rgba(8,11,28,0.98); border-left:1px solid rgba(255,59,92,0.2); border-top:1px solid rgba(255,59,92,0.2); rotate:45deg; }
+    .nav-links li.open .dropdown { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
+    .drop-section { font-size:0.62rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--dim); padding:0.5rem 0.75rem 0.35rem; }
+    .drop-item { display:flex; align-items:center; gap:10px; padding:0.6rem 0.75rem; border-radius:12px; text-decoration:none; color:rgba(200,215,250,0.8); font-size:0.84rem; font-weight:500; transition:background 0.15s,color 0.15s,transform 0.15s; }
+    .drop-item:hover { background:rgba(255,59,92,0.1); color:var(--text); transform:translateX(2px); }
+    .di-icon { width:30px; height:30px; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:0.85rem; }
+    .di-r{background:rgba(255,59,92,0.15);} .di-b{background:rgba(59,127,255,0.15);} .di-t{background:rgba(0,212,170,0.12);} .di-a{background:rgba(255,179,64,0.12);}
+    .di-text strong { display:block; font-size:0.82rem; font-weight:600; color:#e0e8ff; }
+    .di-text span   { font-size:0.7rem; color:var(--dim); }
+    .drop-divider { height:1px; background:var(--border); margin:0.4rem 0.5rem; }
+
+    .nav-actions { display:flex; align-items:center; gap:0.75rem; }
+    .nav-btn { padding:0.5rem 1.2rem; border-radius:100px; font-family:var(--body); font-size:0.85rem; font-weight:600; cursor:pointer; border:none; transition:all 0.2s; text-decoration:none; display:inline-flex; align-items:center; }
+    .nb-ghost { background:transparent; color:var(--muted); border:1px solid var(--border2); }
+    .nb-ghost:hover { color:var(--text); background:var(--surface2); }
+    .nb-red { background:var(--red); color:#fff; box-shadow:0 4px 20px rgba(255,59,92,0.4); }
+    .nb-red:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(255,59,92,0.5); }
+    .nb-logout { background:rgba(255,59,92,0.1); color:var(--red2); border:1px solid rgba(255,59,92,0.25); }
+    .nb-logout:hover { background:rgba(255,59,92,0.18); }
+
+    .nav-user-pill { display:none; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid var(--border2); border-radius:100px; padding:5px 14px 5px 8px; }
+    .nav-user-pill.show { display:flex; }
+    .nup-avatar { width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,var(--blue),var(--teal)); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700; color:#fff; }
+    .nup-name { font-size:0.78rem; font-weight:600; color:var(--text); max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    @media (max-width:860px) { .nav-links,.nav-actions{display:none;} }
+
+    /* PAGE */
+    .page { position:relative; z-index:1; min-height:100vh; padding:68px 1.5rem 4rem; display:flex; flex-direction:column; align-items:center; }
+    .page-header { max-width:680px; width:100%; text-align:center; padding:4rem 0 3rem; }
+    .pg-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(255,179,64,0.1); border:1px solid rgba(255,179,64,0.25); border-radius:100px; padding:5px 16px; font-size:0.73rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); margin-bottom:1.8rem; animation:riseIn 0.7s ease 0.2s both; }
+    .pg-title { font-family:var(--font); font-size:clamp(2.2rem,5vw,3.5rem); font-weight:800; letter-spacing:-0.04em; line-height:1.08; color:var(--text); margin-bottom:1rem; animation:riseIn 0.7s ease 0.35s both; }
+    .pg-title .acc { background:linear-gradient(90deg,var(--amber),var(--red2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .pg-sub { font-size:1.05rem; color:var(--muted); line-height:1.65; animation:riseIn 0.7s ease 0.5s both; }
+    @keyframes riseIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+
+    /* Cards */
+    .survey-grid { max-width:1000px; width:100%; display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; animation:riseIn 0.7s ease 0.65s both; }
+    .survey-card { background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:2.2rem 1.8rem 1.8rem; cursor:pointer; position:relative; overflow:hidden; transition:transform 0.3s cubic-bezier(0.22,1,0.36,1),border-color 0.25s,box-shadow 0.25s; text-align:left; }
+    .survey-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:22px 22px 0 0; opacity:0; transition:opacity 0.25s; }
+    .survey-card::after { content:''; position:absolute; inset:0; background:radial-gradient(circle at 50% 0%,rgba(255,255,255,0.04),transparent 70%); opacity:0; transition:opacity 0.25s; }
+    .survey-card:hover { transform:translateY(-8px) scale(1.01); box-shadow:0 28px 70px rgba(0,0,0,0.45); }
+    .survey-card:hover::before,.survey-card:hover::after { opacity:1; }
+    .sc-1::before{background:linear-gradient(90deg,var(--blue),var(--blue2));} .sc-1:hover{border-color:rgba(59,127,255,0.35);}
+    .sc-2::before{background:linear-gradient(90deg,var(--red),var(--red2));} .sc-2:hover{border-color:rgba(255,59,92,0.35);}
+    .sc-3::before{background:linear-gradient(90deg,var(--teal),#00f0c0);} .sc-3:hover{border-color:rgba(0,212,170,0.35);}
+    .sc-icon { width:58px; height:58px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:1.65rem; margin-bottom:1.4rem; position:relative; z-index:1; }
+    .si-b{background:rgba(59,127,255,0.15);} .si-r{background:rgba(255,59,92,0.12);} .si-t{background:rgba(0,212,170,0.1);}
+    .sc-num { font-size:0.64rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:0.5rem; position:relative; z-index:1; }
+    .sn-b{color:var(--blue2);} .sn-r{color:var(--red2);} .sn-t{color:var(--teal);}
+    .sc-title { font-family:var(--font); font-size:1.2rem; font-weight:700; color:var(--text); margin-bottom:0.65rem; line-height:1.25; position:relative; z-index:1; }
+    .sc-desc { font-size:0.84rem; color:var(--muted); line-height:1.6; margin-bottom:1.5rem; position:relative; z-index:1; }
+    .sc-footer { display:flex; align-items:center; justify-content:space-between; padding-top:1.2rem; border-top:1px solid var(--border); position:relative; z-index:1; }
+    .sc-count { font-size:0.75rem; color:var(--dim); }
+    .sc-arrow { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.95rem; transition:transform 0.2s; }
+    .sa-b{background:rgba(59,127,255,0.12);color:var(--blue2);} .sa-r{background:rgba(255,59,92,0.12);color:var(--red2);} .sa-t{background:rgba(0,212,170,0.1);color:var(--teal);}
+    .survey-card:hover .sc-arrow { transform:translateX(5px); }
+
+    /* MODAL */
+    .overlay { position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px) saturate(1.2); z-index:500; display:flex; align-items:center; justify-content:center; padding:1rem; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+    .overlay.open { opacity:1; pointer-events:all; }
+    .modal { background:rgba(8,11,28,0.98); border:1px solid var(--border2); border-radius:28px; padding:2.5rem; max-width:500px; width:100%; transform:translateY(20px) scale(0.97); transition:transform 0.32s cubic-bezier(0.22,1,0.36,1); box-shadow:0 40px 100px rgba(0,0,0,0.7); }
+    .overlay.open .modal { transform:translateY(0) scale(1); }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.6rem; }
+    .modal-title { font-family:var(--font); font-size:1.2rem; font-weight:700; color:var(--text); }
+    .close-btn { width:34px; height:34px; border-radius:50%; background:var(--surface2); border:1px solid var(--border2); color:var(--muted); cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+    .close-btn:hover { background:rgba(255,59,92,0.15); color:var(--red2); border-color:rgba(255,59,92,0.3); }
+    .modal-qs { list-style:none; display:flex; flex-direction:column; gap:0.65rem; margin-bottom:1.8rem; }
+    .modal-qs li { display:flex; align-items:flex-start; gap:11px; font-size:0.88rem; color:rgba(210,220,245,0.85); line-height:1.5; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:12px; padding:0.75rem 1rem; transition:border-color 0.2s; }
+    .modal-qs li:hover { border-color:var(--border2); }
+    .q-num { font-size:0.68rem; font-weight:800; opacity:0.4; margin-top:2px; flex-shrink:0; letter-spacing:0.04em; }
+    .start-btn { width:100%; padding:14px; border:none; border-radius:14px; font-family:var(--body); font-size:0.95rem; font-weight:700; cursor:pointer; transition:all 0.2s; position:relative; overflow:hidden; }
+    .sb-b{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 6px 24px rgba(59,127,255,0.35);}
+    .sb-b:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(59,127,255,0.45);}
+    .sb-r{background:linear-gradient(135deg,var(--red),var(--red2));color:#fff;box-shadow:0 6px 24px rgba(255,59,92,0.35);}
+    .sb-r:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(255,59,92,0.45);}
+    .sb-t{background:linear-gradient(135deg,var(--teal),#00f0c0);color:#050810;box-shadow:0 6px 24px rgba(0,212,170,0.3);}
+    .sb-t:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,212,170,0.4);}
+
+    @media (max-width:768px) { .survey-grid{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+
+<div class="scene"></div>
+<div class="noise"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="nuur.html" class="nav-brand">
+    <div class="brand-icon">🛡️</div>
+    <span class="brand-name">Safe<em>School</em></span>
+  </a>
+
+  <ul class="nav-links">
+    <li>
+      <a href="#">Нүүр <span class="chev">▾</span></a>
+      <div class="dropdown">
+        <div class="drop-section">Хурдан хандах</div>
+        <a class="drop-item" href="nuur.html"><div class="di-icon di-b">🏠</div><div class="di-text"><strong>Нүүр хуудас</strong><span>Системийн танилцуулга</span></div></a>
+        <a class="drop-item" href="nuur.html"><div class="di-icon di-t">📊</div><div class="di-text"><strong>Статистик</strong><span>Мэдэгдлийн дүн шинжилгээ</span></div></a>
+      </div>
+    </li>
+    <li>
+      <a href="#">Мэдэгдэл <span class="chev">▾</span></a>
+      <div class="dropdown">
+        <div class="drop-section">Мэдэгдлийн төрөл</div>
+        <a class="drop-item" href="index.html"><div class="di-icon di-r">📢</div><div class="di-text"><strong>Шинэ мэдэгдэл</strong><span>Дээрэлхэлт мэдэгдэх</span></div></a>
+        <a class="drop-item" href="index.html"><div class="di-icon di-b">🔒</div><div class="di-text"><strong>Нэргүй мэдэгдэл</strong><span>Нууцлалтайгаар мэдэгдэх</span></div></a>
+      </div>
+    </li>
+    <li>
+      <a href="aguulga.html" style="color:var(--text)">Асуулга <span class="chev" style="opacity:0.8">▾</span></a>
+      <div class="dropdown">
+        <div class="drop-section">Асуулгын төрөл</div>
+        <a class="drop-item" href="#" onclick="openModal('student');return false;"><div class="di-icon di-b">📋</div><div class="di-text"><strong>Суралцагчийн асуулга</strong><span>Сурагчдад зориулсан</span></div></a>
+        <a class="drop-item" href="#" onclick="openModal('teacher');return false;"><div class="di-icon di-r">👩‍🏫</div><div class="di-text"><strong>Багшийн асуулга</strong><span>Багш, ажилтнуудад</span></div></a>
+        <a class="drop-item" href="#" onclick="openModal('parent');return false;"><div class="di-icon di-t">👨‍👩‍👧</div><div class="di-text"><strong>Эцэг эхийн асуулга</strong><span>Гэр бүлд зориулсан</span></div></a>
+      </div>
+    </li>
+    <li>
+      <a href="#">Тусламж <span class="chev">▾</span></a>
+      <div class="dropdown">
+        <div class="drop-section">Дэмжлэг</div>
+        <a class="drop-item" href="#"><div class="di-icon di-b">❓</div><div class="di-text"><strong>Түгээмэл асуулт</strong><span>Хариултыг эндээс олоорой</span></div></a>
+        <a class="drop-item" href="#"><div class="di-icon di-r">🆘</div><div class="di-text"><strong>Яаралтай тусламж</strong><span>Шуурхай холбоо барих</span></div></a>
+      </div>
+    </li>
+    <li>
+      <a href="#">Холбоо <span class="chev">▾</span></a>
+      <div class="dropdown">
+        <div class="drop-section">Бидэнтэй холбогдох</div>
+        <a class="drop-item" href="holboo_barih.html"><div class="di-icon di-b">✉️</div><div class="di-text"><strong>И-мэйл</strong><span>info@safeschool.mn</span></div></a>
+        <a class="drop-item" href="holboo_barih.html"><div class="di-icon di-t">📞</div><div class="di-text"><strong>Утас</strong><span>1800-1234 (үнэгүй)</span></div></a>
+      </div>
+    </li>
+  </ul>
+
+  <div class="nav-actions">
+    <a href="newtreh.html" class="nav-btn nb-ghost" id="nav-login-btn">Нэвтрэх</a>
+    <div class="nav-user-pill" id="nav-user-pill">
+      <div class="nup-avatar" id="nav-avatar">?</div>
+      <span class="nup-name" id="nav-username">Хэрэглэгч</span>
+    </div>
+    <button class="nav-btn nb-logout" id="nav-logout-btn" onclick="doLogout()" style="display:none;">Гарах</button>
+    <a href="index.html" class="nav-btn nb-red">Мэдэгдэл өгөх</a>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+  <div class="page-header">
+    <div class="pg-badge">📋 Асуулгын систем</div>
+    <h1 class="pg-title">Асуулгын төрлөө<br><span class="acc">сонгоно уу</span></h1>
+    <p class="pg-sub">Өөрийн үүргийн дагуу тохирох асуулгыг сонгон, сургуулийн орчинг сайжруулахад хувь нэмрээ оруул.</p>
+  </div>
+
+  <div class="survey-grid">
+    <div class="survey-card sc-1" onclick="openModal('student')">
+      <div class="sc-icon si-b">👩‍🎓</div>
+      <div class="sc-num sn-b">Асуулга #01</div>
+      <div class="sc-title">Суралцагчийн асуулга</div>
+      <p class="sc-desc">Сурагчдад зориулсан сургалтын орчин, багш нарын үйл ажиллагааны үнэлгээний асуулга.</p>
+      <div class="sc-footer"><span class="sc-count">📝 12 асуулт · ~5 мин</span><div class="sc-arrow sa-b">→</div></div>
+    </div>
+    <div class="survey-card sc-2" onclick="openModal('teacher')">
+      <div class="sc-icon si-r">👩‍🏫</div>
+      <div class="sc-num sn-r">Асуулга #02</div>
+      <div class="sc-title">Багшийн асуулга</div>
+      <p class="sc-desc">Багш, ажилтнуудад зориулсан ажлын орчин, мэргэжлийн хөгжлийн үнэлгээний асуулга.</p>
+      <div class="sc-footer"><span class="sc-count">📝 15 асуулт · ~7 мин</span><div class="sc-arrow sa-r">→</div></div>
+    </div>
+    <div class="survey-card sc-3" onclick="openModal('parent')">
+      <div class="sc-icon si-t">👨‍👩‍👧</div>
+      <div class="sc-num sn-t">Асуулга #03</div>
+      <div class="sc-title">Эцэг эхийн асуулга</div>
+      <p class="sc-desc">Гэр бүлд зориулсан сургуулийн үйлчилгээ, харилцааны чанарын үнэлгээний асуулга.</p>
+      <div class="sc-footer"><span class="sc-count">📝 10 асуулт · ~4 мин</span><div class="sc-arrow sa-t">→</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="m-title"></div>
+      <button class="close-btn" onclick="closeModal(null)">✕</button>
+    </div>
+    <ul class="modal-qs" id="m-qs"></ul>
+    <button class="start-btn" id="m-btn">Эхлэх →</button>
+  </div>
+</div>
+
+<script>
+const surveys = {
+  student: { title:'👩‍🎓 Суралцагчийн асуулга', btnClass:'sb-b', questions:['Сургалтын орчин таны суралцахад таатай байдаг уу?','Багш нар тайлбараа ойлгомжтой хийдэг үү?','Гэрийн даалгавар тохиромжтой хэмжээтэй байдаг уу?','Найз нөхөдтэйгөө сайн харилцаатай байдаг уу?','Тусламж хэрэгтэй үед багш нараасаа авдаг уу?'] },
+  teacher: { title:'👩‍🏫 Багшийн асуулга', btnClass:'sb-r', questions:['Ажлын орчин таны ажилд сэтгэл ханамжтай байдаг уу?','Удирдлагаас дэмжлэг, хамтын ажиллагаа сайн байдаг уу?','Мэргэжлийн хөгжлийн боломж хангалттай байдаг уу?','Цалин урамшуулал зохистой гэж үздэг үү?','Хүүхдийн хөгжилд нөлөөлж чаддаг гэж боддог уу?'] },
+  parent:  { title:'👨‍👩‍👧 Эцэг эхийн асуулга', btnClass:'sb-t', questions:['Сургуулийн үйлчилгээнд сэтгэл ханамжтай байдаг уу?','Хүүхдийнхээ дэвшлийн мэдэгдлийг цаг тухайд нь авдаг уу?','Сургуультай харилцаа хялбар, ойлгомжтой байдаг уу?','Хүүхдийн аюулгүй байдалд итгэлтэй байдаг уу?','Сургуулийн арга хэмжээнд идэвхтэй оролцох боломж байдаг уу?'] }
+};
+let current = null;
+
+function openModal(type) {
+  current = type;
+  const d = surveys[type];
+  document.getElementById('m-title').textContent = d.title;
+  const btn = document.getElementById('m-btn');
+  btn.className = 'start-btn ' + d.btnClass;
+  document.getElementById('m-qs').innerHTML = d.questions.map((q,i)=>`<li><span class="q-num">${String(i+1).padStart(2,'0')}</span>${q}</li>`).join('');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('overlay')) return;
+  document.getElementById('overlay').classList.remove('open');
+}
+
+document.getElementById('m-btn').onclick = () => {
+  alert('Асуулга эхэлж байна... (' + surveys[current].title + ')');
+};
+
+/* AUTH NAV */
+function initAuthNav() {
+  const loggedIn = sessionStorage.getItem('ss_loggedIn') === '1';
+  const email = sessionStorage.getItem('ss_email') || '';
+  const loginBtn = document.getElementById('nav-login-btn');
+  const logoutBtn = document.getElementById('nav-logout-btn');
+  const userPill = document.getElementById('nav-user-pill');
+  if (loggedIn) {
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+    if (userPill) { userPill.classList.add('show'); document.getElementById('nav-avatar').textContent = email ? email[0].toUpperCase() : '?'; document.getElementById('nav-username').textContent = email.split('@')[0] || 'Хэрэглэгч'; }
+  } else {
+    if (loginBtn) loginBtn.style.display = 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (userPill) userPill.classList.remove('show');
+  }
+}
+function doLogout() { sessionStorage.removeItem('ss_loggedIn'); sessionStorage.removeItem('ss_email'); initAuthNav(); }
+initAuthNav();
+
+/* Dropdown */
+const items = document.querySelectorAll('.nav-links>li');
+items.forEach(li=>{ const a=li.querySelector('a'); const d=li.querySelector('.dropdown'); if(!d)return; a.addEventListener('click',e=>{ e.preventDefault(); const was=li.classList.contains('open'); items.forEach(x=>x.classList.remove('open')); if(!was)li.classList.add('open'); }); });
+document.addEventListener('click',e=>{ if(!e.target.closest('.nav-links'))items.forEach(x=>x.classList.remove('open')); });
+</script>
+</body>
+</html>

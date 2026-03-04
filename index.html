@@ -7,358 +7,200 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#0f1117;
-  --surface:#181c27;
-  --surface2:#1f2436;
-  --surface3:#252b3b;
-  --border:#2e3650;
-  --border2:#3a4260;
-  --accent:#6366f1;
-  --accent2:#818cf8;
-  --accent-glow:rgba(99,102,241,0.25);
-  --red:#f43f5e;
-  --red-soft:rgba(244,63,94,0.15);
-  --amber:#f59e0b;
-  --amber-soft:rgba(245,158,11,0.13);
-  --green:#10b981;
-  --green-soft:rgba(16,185,129,0.13);
-  --blue:#3b82f6;
-  --blue-soft:rgba(59,130,246,0.13);
-  --text:#e2e8f0;
-  --text2:#94a3b8;
-  --text3:#64748b;
-  --white:#ffffff;
-  --font:'Outfit',sans-serif;
-  --mono:'JetBrains Mono',monospace;
-  --r:14px;
-  --r-lg:20px;
-  --shadow:0 4px 24px rgba(0,0,0,0.4);
-  --shadow-lg:0 8px 48px rgba(0,0,0,0.5);
+  --bg:#0f1117; --surface:#181c27; --surface2:#1f2436; --surface3:#252b3b;
+  --border:#2e3650; --border2:#3a4260;
+  --accent:#6366f1; --accent2:#818cf8; --accent-glow:rgba(99,102,241,0.25);
+  --red:#f43f5e; --red-soft:rgba(244,63,94,0.15);
+  --amber:#f59e0b; --amber-soft:rgba(245,158,11,0.13);
+  --green:#10b981; --green-soft:rgba(16,185,129,0.13);
+  --blue:#3b82f6; --blue-soft:rgba(59,130,246,0.13);
+  --text:#e2e8f0; --text2:#94a3b8; --text3:#64748b; --white:#ffffff;
+  --font:'Outfit',sans-serif; --mono:'JetBrains Mono',monospace;
+  --r:14px; --r-lg:20px;
+  --shadow:0 4px 24px rgba(0,0,0,0.4); --shadow-lg:0 8px 48px rgba(0,0,0,0.5);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-track{background:var(--surface);} ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px;}
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:6px;}
-::-webkit-scrollbar-track{background:var(--surface);}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px;}
+/* HEADER */
+header { background:var(--surface); border-bottom:1px solid var(--border); padding:0 2rem; height:64px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; backdrop-filter:blur(12px); }
+.logo { display:flex; align-items:center; gap:12px; }
+.back-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px 7px 10px; border-radius:10px; border:1.5px solid var(--border2); background:var(--surface2); color:var(--text2); font-family:var(--font); font-size:0.8rem; font-weight:700; text-decoration:none; letter-spacing:0.02em; transition:all 0.2s cubic-bezier(.22,1,.36,1); position:relative; overflow:hidden; }
+.back-btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(99,102,241,0.08),transparent); opacity:0; transition:opacity 0.2s; }
+.back-btn:hover { border-color:var(--accent); color:var(--accent2); background:var(--surface3); transform:translateX(-2px); box-shadow:0 0 0 3px var(--accent-glow); }
+.back-btn:hover::before { opacity:1; }
+.back-btn svg { transition:transform 0.2s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
+.back-btn:hover svg { transform:translateX(-3px); }
+.back-btn:active { transform:translateX(-1px) scale(0.97); }
+.logo-badge { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 0 16px var(--accent-glow); }
+.logo-text { font-weight:800; font-size:1rem; letter-spacing:-0.3px; }
+.logo-sub { font-size:0.7rem; color:var(--text3); font-weight:500; }
+.header-right { display:flex; align-items:center; gap:1rem; }
+.hbadge { font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:20px; border:1px solid var(--border2); color:var(--text2); font-family:var(--mono); }
+.clock { font-family:var(--mono); font-size:0.85rem; color:var(--accent2); font-weight:600; }
 
-/* ── HEADER ── */
-header{
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  padding:0 2rem;
-  height:64px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:50;
-  backdrop-filter:blur(12px);
-}
-.logo{display:flex;align-items:center;gap:12px;}
-.logo-badge{
-  width:38px;height:38px;border-radius:10px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.1rem;box-shadow:0 0 16px var(--accent-glow);
-}
-.logo-text{font-weight:800;font-size:1rem;letter-spacing:-0.3px;}
-.logo-sub{font-size:0.7rem;color:var(--text3);font-weight:500;}
-.header-right{display:flex;align-items:center;gap:1rem;}
-.hbadge{
-  font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:20px;
-  border:1px solid var(--border2);color:var(--text2);
-  font-family:var(--mono);
-}
-.clock{font-family:var(--mono);font-size:0.85rem;color:var(--accent2);font-weight:600;}
+/* Auth nav elements */
+.nav-btn-auth { padding:6px 16px; border-radius:20px; font-family:var(--font); font-size:0.8rem; font-weight:700; cursor:pointer; border:none; transition:all 0.2s; text-decoration:none; display:inline-flex; align-items:center; }
+.nb-login { background:transparent; color:var(--text2); border:1px solid var(--border2); }
+.nb-login:hover { color:var(--text); border-color:var(--accent); background:var(--surface3); }
+.nb-logout { background:rgba(244,63,94,0.1); color:var(--red); border:1px solid rgba(244,63,94,0.25); }
+.nb-logout:hover { background:rgba(244,63,94,0.18); }
+.nav-user-pill { display:none; align-items:center; gap:8px; background:var(--surface2); border:1px solid var(--border2); border-radius:20px; padding:4px 12px 4px 6px; }
+.nav-user-pill.show { display:flex; }
+.nup-avatar { width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700; color:#fff; }
+.nup-name { font-size:0.78rem; font-weight:600; color:var(--text); max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
-/* ── LAYOUT ── */
-.page{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;}
+/* LAYOUT */
+.page { max-width:1100px; margin:0 auto; padding:2rem 1.5rem; }
 
-/* ── PROGRESS STEPS ── */
-.steps{display:flex;align-items:center;gap:0;margin-bottom:2.5rem;}
-.step{
-  display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;
-  position:relative;
-}
-.step:not(:last-child)::after{
-  content:'';position:absolute;top:18px;left:calc(50% + 18px);
-  width:calc(100% - 36px);height:2px;
-  background:var(--border);z-index:0;
-  transition:background 0.4s;
-}
-.step.done:not(:last-child)::after{background:var(--accent);}
-.step-circle{
-  width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:0.85rem;font-weight:800;
-  border:2px solid var(--border2);
-  background:var(--surface2);color:var(--text3);
-  z-index:1;transition:all 0.3s;
-}
-.step.active .step-circle{border-color:var(--accent);background:var(--accent-glow);color:var(--accent2);}
-.step.done   .step-circle{border-color:var(--accent);background:var(--accent);color:white;}
-.step-label{font-size:0.68rem;font-weight:700;color:var(--text3);text-align:center;letter-spacing:0.03em;}
-.step.active .step-label{color:var(--accent2);}
-.step.done   .step-label{color:var(--text2);}
+/* STEPS */
+.steps { display:flex; align-items:center; gap:0; margin-bottom:2.5rem; }
+.step { display:flex; flex-direction:column; align-items:center; gap:6px; flex:1; position:relative; }
+.step:not(:last-child)::after { content:''; position:absolute; top:18px; left:calc(50% + 18px); width:calc(100% - 36px); height:2px; background:var(--border); z-index:0; transition:background 0.4s; }
+.step.done:not(:last-child)::after { background:var(--accent); }
+.step-circle { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.85rem; font-weight:800; border:2px solid var(--border2); background:var(--surface2); color:var(--text3); z-index:1; transition:all 0.3s; }
+.step.active .step-circle { border-color:var(--accent); background:var(--accent-glow); color:var(--accent2); }
+.step.done   .step-circle { border-color:var(--accent); background:var(--accent); color:white; }
+.step-label { font-size:0.68rem; font-weight:700; color:var(--text3); text-align:center; letter-spacing:0.03em; }
+.step.active .step-label { color:var(--accent2); }
+.step.done   .step-label { color:var(--text2); }
 
-/* ── PANEL ── */
-.panel{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:1.75rem;
-  box-shadow:var(--shadow);
-  animation:fadeUp 0.4s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-.panel-title{
-  font-size:1.05rem;font-weight:800;color:var(--white);
-  display:flex;align-items:center;gap:10px;margin-bottom:1.4rem;
-}
-.panel-title span{font-size:1.2rem;}
+/* PANEL */
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:1.75rem; box-shadow:var(--shadow); animation:fadeUp 0.4s cubic-bezier(.22,1,.36,1) both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+.panel-title { font-size:1.05rem; font-weight:800; color:var(--white); display:flex; align-items:center; gap:10px; margin-bottom:1.4rem; }
+.panel-title span { font-size:1.2rem; }
 
-/* ── FORM ── */
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
-.form-row.full{grid-template-columns:1fr;}
-.form-group{display:flex;flex-direction:column;gap:6px;}
-label{font-size:0.78rem;font-weight:700;color:var(--text2);letter-spacing:0.04em;text-transform:uppercase;}
-.req{color:var(--red);}
-input,select,textarea{
-  background:var(--surface2);
-  border:1.5px solid var(--border);
-  border-radius:10px;
-  padding:0.7rem 0.9rem;
-  color:var(--text);
-  font-family:var(--font);
-  font-size:0.88rem;
-  font-weight:500;
-  transition:border-color 0.2s,box-shadow 0.2s;
-  outline:none;
-  width:100%;
-}
-input:focus,select:focus,textarea:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px var(--accent-glow);
-}
-input::placeholder,textarea::placeholder{color:var(--text3);}
-select option{background:var(--surface2);}
-textarea{resize:vertical;min-height:100px;line-height:1.5;}
+/* FORM */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+.form-row.full { grid-template-columns:1fr; }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+label { font-size:0.78rem; font-weight:700; color:var(--text2); letter-spacing:0.04em; text-transform:uppercase; }
+.req { color:var(--red); }
+input,select,textarea { background:var(--surface2); border:1.5px solid var(--border); border-radius:10px; padding:0.7rem 0.9rem; color:var(--text); font-family:var(--font); font-size:0.88rem; font-weight:500; transition:border-color 0.2s,box-shadow 0.2s; outline:none; width:100%; }
+input:focus,select:focus,textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+input::placeholder,textarea::placeholder { color:var(--text3); }
+select option { background:var(--surface2); }
+textarea { resize:vertical; min-height:100px; line-height:1.5; }
 
-/* ── RADIO CHIPS ── */
-.chip-group{display:flex;flex-wrap:wrap;gap:8px;}
-.chip{
-  padding:7px 14px;border-radius:8px;
-  border:1.5px solid var(--border);
-  background:var(--surface2);
-  color:var(--text2);font-size:0.8rem;font-weight:700;
-  cursor:pointer;transition:all 0.2s;
-  user-select:none;
-}
-.chip:hover{border-color:var(--accent);color:var(--accent2);}
-.chip.selected{border-color:var(--accent);background:var(--accent-glow);color:var(--accent2);}
-.chip.red.selected{border-color:var(--red);background:var(--red-soft);color:var(--red);}
-.chip.amber.selected{border-color:var(--amber);background:var(--amber-soft);color:var(--amber);}
+/* CHIP */
+.chip-group { display:flex; flex-wrap:wrap; gap:8px; }
+.chip { padding:7px 14px; border-radius:8px; border:1.5px solid var(--border); background:var(--surface2); color:var(--text2); font-size:0.8rem; font-weight:700; cursor:pointer; transition:all 0.2s; user-select:none; }
+.chip:hover { border-color:var(--accent); color:var(--accent2); }
+.chip.selected { border-color:var(--accent); background:var(--accent-glow); color:var(--accent2); }
+.chip.red.selected { border-color:var(--red); background:var(--red-soft); color:var(--red); }
 
-/* ── UPLOAD ZONE ── */
-.upload-zone{
-  border:2px dashed var(--border2);border-radius:var(--r);
-  padding:2rem;text-align:center;cursor:pointer;
-  transition:all 0.25s;background:var(--surface2);
-  position:relative;
-}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(99,102,241,0.05);}
-.upload-icon{font-size:2.2rem;margin-bottom:0.5rem;}
-.upload-title{font-weight:700;color:var(--text);margin-bottom:4px;}
-.upload-sub{font-size:0.78rem;color:var(--text3);}
-#fileInput{display:none;}
-.file-list{margin-top:1rem;display:flex;flex-direction:column;gap:8px;}
-.file-item{
-  display:flex;align-items:center;gap:10px;
-  background:var(--surface3);border:1px solid var(--border);
-  border-radius:10px;padding:0.65rem 0.9rem;
-}
-.file-icon{font-size:1.1rem;}
-.file-name{font-size:0.82rem;font-weight:600;color:var(--text);flex:1;}
-.file-size{font-size:0.72rem;color:var(--text3);font-family:var(--mono);}
-.file-del{
-  background:none;border:none;color:var(--text3);cursor:pointer;
-  font-size:0.9rem;padding:2px 6px;border-radius:6px;
-  transition:all 0.15s;
-}
-.file-del:hover{background:var(--red-soft);color:var(--red);}
+/* UPLOAD */
+.upload-zone { border:2px dashed var(--border2); border-radius:var(--r); padding:2rem; text-align:center; cursor:pointer; transition:all 0.25s; background:var(--surface2); position:relative; }
+.upload-zone:hover,.upload-zone.drag { border-color:var(--accent); background:rgba(99,102,241,0.05); }
+.upload-icon { font-size:2.2rem; margin-bottom:0.5rem; }
+.upload-title { font-weight:700; color:var(--text); margin-bottom:4px; }
+.upload-sub { font-size:0.78rem; color:var(--text3); }
+#fileInput { display:none; }
+.file-list { margin-top:1rem; display:flex; flex-direction:column; gap:8px; }
+.file-item { display:flex; align-items:center; gap:10px; background:var(--surface3); border:1px solid var(--border); border-radius:10px; padding:0.65rem 0.9rem; }
+.file-icon { font-size:1.1rem; }
+.file-name { font-size:0.82rem; font-weight:600; color:var(--text); flex:1; }
+.file-size { font-size:0.72rem; color:var(--text3); font-family:var(--mono); }
+.file-del { background:none; border:none; color:var(--text3); cursor:pointer; font-size:0.9rem; padding:2px 6px; border-radius:6px; transition:all 0.15s; }
+.file-del:hover { background:var(--red-soft); color:var(--red); }
 
-/* ── DECISION CARDS ── */
-.decision-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
-.decision-card{
-  border:2px solid var(--border);border-radius:var(--r);
-  padding:1.3rem;cursor:pointer;transition:all 0.25s;
-  background:var(--surface2);
-}
-.decision-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
-.decision-card.selected-hide{border-color:var(--amber);background:var(--amber-soft);}
-.decision-card.selected-report{border-color:var(--accent);background:var(--accent-glow);}
-.dc-icon{font-size:2rem;margin-bottom:0.6rem;}
-.dc-title{font-size:0.95rem;font-weight:800;color:var(--white);margin-bottom:4px;}
-.dc-desc{font-size:0.78rem;color:var(--text2);line-height:1.4;}
-.dc-badge{
-  display:inline-block;margin-top:8px;
-  font-size:0.68rem;font-weight:800;padding:3px 10px;
-  border-radius:20px;letter-spacing:0.05em;
-}
-.badge-amber{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(245,158,11,0.3);}
-.badge-accent{background:var(--accent-glow);color:var(--accent2);border:1px solid rgba(99,102,241,0.3);}
-.badge-red{background:var(--red-soft);color:var(--red);border:1px solid rgba(244,63,94,0.3);}
-.badge-green{background:var(--green-soft);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+/* DECISION */
+.decision-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; }
+.decision-card { border:2px solid var(--border); border-radius:var(--r); padding:1.3rem; cursor:pointer; transition:all 0.25s; background:var(--surface2); }
+.decision-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+.decision-card.selected-hide { border-color:var(--amber); background:var(--amber-soft); }
+.decision-card.selected-report { border-color:var(--accent); background:var(--accent-glow); }
+.dc-icon { font-size:2rem; margin-bottom:0.6rem; }
+.dc-title { font-size:0.95rem; font-weight:800; color:var(--white); margin-bottom:4px; }
+.dc-desc { font-size:0.78rem; color:var(--text2); line-height:1.4; }
+.dc-badge { display:inline-block; margin-top:8px; font-size:0.68rem; font-weight:800; padding:3px 10px; border-radius:20px; letter-spacing:0.05em; }
+.badge-amber { background:var(--amber-soft); color:var(--amber); border:1px solid rgba(245,158,11,0.3); }
+.badge-accent { background:var(--accent-glow); color:var(--accent2); border:1px solid rgba(99,102,241,0.3); }
+.badge-green { background:var(--green-soft); color:var(--green); border:1px solid rgba(16,185,129,0.3); }
 
-/* ── NOTIFY FLOW ── */
-.notify-flow{display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem;}
-.notify-row{
-  display:flex;align-items:center;gap:1rem;
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:var(--r);padding:1rem 1.1rem;
-  transition:all 0.2s;
-}
-.notify-row.active{border-color:var(--accent);background:rgba(99,102,241,0.07);}
-.notify-row.skip{opacity:0.4;}
-.notify-row.escalated{border-color:var(--amber);background:var(--amber-soft);}
-.nr-icon{font-size:1.5rem;flex-shrink:0;}
-.nr-info{flex:1;}
-.nr-title{font-size:0.88rem;font-weight:800;color:var(--white);}
-.nr-desc{font-size:0.75rem;color:var(--text2);margin-top:2px;}
-.nr-status{
-  font-size:0.72rem;font-weight:700;padding:4px 10px;
-  border-radius:20px;font-family:var(--mono);
-  white-space:nowrap;
-}
+/* NOTIFY */
+.notify-flow { display:flex; flex-direction:column; gap:0.75rem; margin-bottom:1.5rem; }
+.notify-row { display:flex; align-items:center; gap:1rem; background:var(--surface2); border:1px solid var(--border); border-radius:var(--r); padding:1rem 1.1rem; transition:all 0.2s; }
+.notify-row.active { border-color:var(--accent); background:rgba(99,102,241,0.07); }
+.notify-row.skip { opacity:0.4; }
+.notify-row.escalated { border-color:var(--amber); background:var(--amber-soft); }
+.nr-icon { font-size:1.5rem; flex-shrink:0; }
+.nr-info { flex:1; }
+.nr-title { font-size:0.88rem; font-weight:800; color:var(--white); }
+.nr-desc { font-size:0.75rem; color:var(--text2); margin-top:2px; }
+.nr-status { font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:20px; font-family:var(--mono); white-space:nowrap; }
 .st-waiting{background:var(--surface3);color:var(--text3);border:1px solid var(--border);}
 .st-sending{background:var(--accent-glow);color:var(--accent2);border:1px solid rgba(99,102,241,0.3);animation:pulse 1s infinite;}
 .st-sent{background:var(--green-soft);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
 .st-skip{background:var(--surface3);color:var(--text3);border:1px solid var(--border);}
 .st-escalate{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(245,158,11,0.3);animation:pulse 1s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+.flow-arrow { text-align:center; font-size:1.1rem; color:var(--text3); margin:-4px 0; transition:color 0.3s; }
+.flow-arrow.active { color:var(--accent); }
+.flow-arrow.escalated-arrow { color:var(--amber); }
 
-/* ── ARROW CONNECTOR ── */
-.flow-arrow{
-  text-align:center;font-size:1.1rem;color:var(--text3);
-  margin:-4px 0;
-  transition:color 0.3s;
-}
-.flow-arrow.active{color:var(--accent);}
-.flow-arrow.escalated-arrow{color:var(--amber);}
+/* BUTTONS */
+.btn-row { display:flex; gap:0.75rem; justify-content:flex-end; margin-top:1.75rem; }
+.btn { padding:0.75rem 1.75rem; border-radius:10px; font-family:var(--font); font-size:0.9rem; font-weight:800; cursor:pointer; border:none; transition:all 0.2s; display:flex; align-items:center; gap:8px; letter-spacing:-0.1px; }
+.btn-primary { background:var(--accent); color:white; box-shadow:0 4px 16px var(--accent-glow); }
+.btn-primary:hover { background:#5254e0; box-shadow:0 6px 24px var(--accent-glow); }
+.btn-secondary { background:var(--surface3); color:var(--text2); border:1px solid var(--border2); }
+.btn-secondary:hover { background:var(--surface2); color:var(--text); }
+.btn-danger { background:var(--red); color:white; box-shadow:0 4px 16px rgba(244,63,94,0.25); }
+.btn-danger:hover { background:#e11d48; }
+.btn-success { background:var(--green); color:white; box-shadow:0 4px 16px rgba(16,185,129,0.25); }
+.btn-success:hover { background:#059669; }
+.btn:disabled { opacity:0.45; cursor:not-allowed; }
 
-/* ── BUTTONS ── */
-.btn-row{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.75rem;}
-.btn{
-  padding:0.75rem 1.75rem;border-radius:10px;
-  font-family:var(--font);font-size:0.9rem;font-weight:800;
-  cursor:pointer;border:none;transition:all 0.2s;
-  display:flex;align-items:center;gap:8px;
-  letter-spacing:-0.1px;
-}
-.btn-primary{background:var(--accent);color:white;box-shadow:0 4px 16px var(--accent-glow);}
-.btn-primary:hover{background:#5254e0;box-shadow:0 6px 24px var(--accent-glow);}
-.btn-secondary{background:var(--surface3);color:var(--text2);border:1px solid var(--border2);}
-.btn-secondary:hover{background:var(--surface2);color:var(--text);}
-.btn-danger{background:var(--red);color:white;box-shadow:0 4px 16px rgba(244,63,94,0.25);}
-.btn-danger:hover{background:#e11d48;}
-.btn-success{background:var(--green);color:white;box-shadow:0 4px 16px rgba(16,185,129,0.25);}
-.btn-success:hover{background:#059669;}
-.btn:disabled{opacity:0.45;cursor:not-allowed;}
-
-/* ── SUCCESS STATE ── */
-.success-panel{
-  text-align:center;padding:3rem 2rem;
-  animation:fadeUp 0.5s cubic-bezier(.22,1,.36,1);
-}
-.success-icon{
-  width:80px;height:80px;border-radius:24px;
-  background:linear-gradient(135deg,var(--green),#0d9488);
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.5rem;margin:0 auto 1.5rem;
-  box-shadow:0 8px 32px rgba(16,185,129,0.35);
-}
-.success-title{font-size:1.5rem;font-weight:900;color:var(--white);margin-bottom:0.5rem;}
-.success-sub{color:var(--text2);font-size:0.88rem;line-height:1.6;max-width:400px;margin:0 auto 1.5rem;}
-.case-id{
-  display:inline-block;
-  font-family:var(--mono);font-size:0.85rem;font-weight:600;
-  background:var(--surface2);border:1px solid var(--border2);
-  border-radius:8px;padding:8px 18px;color:var(--accent2);
-  letter-spacing:0.05em;
-}
-
-/* ── SUMMARY BOX ── */
-.summary-box{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:var(--r);padding:1.1rem 1.3rem;
-  margin-bottom:1.25rem;
-}
-.summary-row{
-  display:flex;justify-content:space-between;
-  padding:5px 0;border-bottom:1px solid var(--border);
-  font-size:0.82rem;
-}
-.summary-row:last-child{border-bottom:none;}
-.sr-key{color:var(--text3);font-weight:600;}
-.sr-val{color:var(--text);font-weight:700;text-align:right;max-width:60%;}
-
-/* ── SEVERITY BAR ── */
-.severity-select{display:flex;gap:8px;flex-wrap:wrap;}
-.sev-opt{
-  flex:1;min-width:80px;
-  padding:10px 8px;text-align:center;border-radius:10px;
-  border:2px solid var(--border);background:var(--surface2);
-  cursor:pointer;transition:all 0.2s;
-}
-.sev-opt:hover{transform:translateY(-2px);}
+/* SEVERITY */
+.severity-select { display:flex; gap:8px; flex-wrap:wrap; }
+.sev-opt { flex:1; min-width:80px; padding:10px 8px; text-align:center; border-radius:10px; border:2px solid var(--border); background:var(--surface2); cursor:pointer; transition:all 0.2s; }
+.sev-opt:hover { transform:translateY(-2px); }
 .sev-opt.s1.sel{border-color:#3b82f6;background:var(--blue-soft);}
 .sev-opt.s2.sel{border-color:var(--green);background:var(--green-soft);}
 .sev-opt.s3.sel{border-color:var(--amber);background:var(--amber-soft);}
 .sev-opt.s4.sel{border-color:var(--red);background:var(--red-soft);}
-.sev-icon{font-size:1.4rem;margin-bottom:4px;}
-.sev-label{font-size:0.68rem;font-weight:800;letter-spacing:0.04em;color:var(--text2);}
+.sev-icon { font-size:1.4rem; margin-bottom:4px; }
+.sev-label { font-size:0.68rem; font-weight:800; letter-spacing:0.04em; color:var(--text2); }
 
-/* ── TOAST ── */
-.toast{
-  position:fixed;bottom:24px;right:24px;
-  background:var(--surface);border:1px solid var(--border2);
-  border-radius:12px;padding:0.9rem 1.3rem;
-  display:flex;align-items:center;gap:10px;
-  box-shadow:var(--shadow-lg);
-  font-size:0.85rem;font-weight:700;
-  z-index:200;
-  transform:translateY(80px);opacity:0;
-  transition:all 0.3s cubic-bezier(.22,1,.36,1);
-  max-width:320px;
-}
-.toast.show{transform:translateY(0);opacity:1;}
+/* SUCCESS */
+.success-panel { text-align:center; padding:3rem 2rem; animation:fadeUp 0.5s cubic-bezier(.22,1,.36,1); }
+.success-icon { width:80px; height:80px; border-radius:24px; background:linear-gradient(135deg,var(--green),#0d9488); display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin:0 auto 1.5rem; box-shadow:0 8px 32px rgba(16,185,129,0.35); }
+.success-title { font-size:1.5rem; font-weight:900; color:var(--white); margin-bottom:0.5rem; }
+.success-sub { color:var(--text2); font-size:0.88rem; line-height:1.6; max-width:400px; margin:0 auto 1.5rem; }
 
-/* ── HIDDEN PANEL ── */
-.hidden-notice{
-  background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(245,158,11,0.05));
-  border:1px solid rgba(245,158,11,0.3);
-  border-radius:var(--r);padding:1rem 1.2rem;
-  display:flex;gap:12px;align-items:flex-start;
-  margin-bottom:1.25rem;
-}
-.hn-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px;}
-.hn-text{font-size:0.82rem;line-height:1.5;color:var(--text2);}
-.hn-text strong{color:var(--amber);}
+/* SUMMARY */
+.summary-box { background:var(--surface2); border:1px solid var(--border); border-radius:var(--r); padding:1.1rem 1.3rem; margin-bottom:1.25rem; }
+.summary-row { display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid var(--border); font-size:0.82rem; }
+.summary-row:last-child { border-bottom:none; }
+.sr-key { color:var(--text3); font-weight:600; }
+.sr-val { color:var(--text); font-weight:700; text-align:right; max-width:60%; }
 
-/* ── RESPONSIVE ── */
-@media(max-width:700px){
-  .form-row{grid-template-columns:1fr;}
-  .decision-grid{grid-template-columns:1fr;}
-  .btn-row{flex-direction:column-reverse;}
-  .btn{width:100%;justify-content:center;}
-  .steps{gap:0;}
-  .step-label{display:none;}
-  header{padding:0 1rem;}
-}
+/* HIDDEN NOTICE */
+.hidden-notice { background:linear-gradient(135deg,rgba(245,158,11,0.1),rgba(245,158,11,0.05)); border:1px solid rgba(245,158,11,0.3); border-radius:var(--r); padding:1rem 1.2rem; display:flex; gap:12px; align-items:flex-start; margin-bottom:1.25rem; }
+.hn-icon { font-size:1.3rem; flex-shrink:0; margin-top:1px; }
+.hn-text { font-size:0.82rem; line-height:1.5; color:var(--text2); }
+.hn-text strong { color:var(--amber); }
+
+/* TOAST */
+.toast { position:fixed; bottom:24px; right:24px; background:var(--surface); border:1px solid var(--border2); border-radius:12px; padding:0.9rem 1.3rem; display:flex; align-items:center; gap:10px; box-shadow:var(--shadow-lg); font-size:0.85rem; font-weight:700; z-index:200; transform:translateY(80px); opacity:0; transition:all 0.3s cubic-bezier(.22,1,.36,1); max-width:320px; }
+.toast.show { transform:translateY(0); opacity:1; }
+
+case-id { display:inline-block; font-family:var(--mono); font-size:0.85rem; font-weight:600; background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:8px 18px; color:var(--accent2); letter-spacing:0.05em; }
+
+@media(max-width:700px) { .form-row{grid-template-columns:1fr;} .decision-grid{grid-template-columns:1fr;} .btn-row{flex-direction:column-reverse;} .btn{width:100%;justify-content:center;} .steps{gap:0;} .step-label{display:none;} header{padding:0 1rem;} }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="logo">
+    <a href="nuur.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 2.5L4 7L8.5 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="back-label">Буцах</span>
+    </a>
     <div class="logo-badge">🛡️</div>
     <div>
       <div class="logo-text">Хүүхэд Хамгааллын Систем</div>
@@ -368,79 +210,40 @@ textarea{resize:vertical;min-height:100px;line-height:1.5;}
   <div class="header-right">
     <div class="hbadge">НУУЦ</div>
     <div class="clock" id="clock">--:--:--</div>
+    <a href="newtreh.html" class="nav-btn-auth nb-login" id="nav-login-btn">Нэвтрэх</a>
+    <div class="nav-user-pill" id="nav-user-pill">
+      <div class="nup-avatar" id="nav-avatar">?</div>
+      <span class="nup-name" id="nav-username">Хэрэглэгч</span>
+    </div>
+    <button class="nav-btn-auth nb-logout" id="nav-logout-btn" onclick="doLogout()" style="display:none;">Гарах</button>
   </div>
 </header>
 
-<!-- MAIN -->
 <div class="page">
-
   <!-- STEPS -->
   <div class="steps" id="stepsBar">
-    <div class="step active" id="step1">
-      <div class="step-circle">1</div>
-      <div class="step-label">Мэдээлэл</div>
-    </div>
-    <div class="step" id="step2">
-      <div class="step-circle">2</div>
-      <div class="step-label">Баримт</div>
-    </div>
-    <div class="step" id="step3">
-      <div class="step-circle">3</div>
-      <div class="step-label">Шийдвэр</div>
-    </div>
-    <div class="step" id="step4">
-      <div class="step-circle">4</div>
-      <div class="step-label">Мэдэгдэл</div>
-    </div>
-    <div class="step" id="step5">
-      <div class="step-circle">✓</div>
-      <div class="step-label">Дуусгавар</div>
-    </div>
+    <div class="step active" id="step1"><div class="step-circle">1</div><div class="step-label">Мэдээлэл</div></div>
+    <div class="step" id="step2"><div class="step-circle">2</div><div class="step-label">Баримт</div></div>
+    <div class="step" id="step3"><div class="step-circle">3</div><div class="step-label">Шийдвэр</div></div>
+    <div class="step" id="step4"><div class="step-circle">4</div><div class="step-label">Мэдэгдэл</div></div>
+    <div class="step" id="step5"><div class="step-circle">✓</div><div class="step-label">Дуусгавар</div></div>
   </div>
 
-  <!-- ═══ STEP 1: МЭДЭЭЛЭЛ ═══ -->
+  <!-- STEP 1 -->
   <div id="panel1" class="panel">
     <div class="panel-title"><span>📝</span> Дарамтлалын тухай мэдэгдэл бүртгэх</div>
-
     <div class="form-row">
-      <div class="form-group">
-        <label>Дарамтлагдсан сурагч <span class="req">*</span></label>
-        <input id="victim" type="text" placeholder="Овог нэр"/>
-      </div>
-      <div class="form-group">
-        <label>Анги <span class="req">*</span></label>
-        <select id="victimClass">
-          <option value="">-- Сонгох --</option>
-          <option>1А</option><option>1Б</option>
-          <option>2А</option><option>2Б</option>
-          <option>3А</option><option>3Б</option>
-          <option>4А</option><option>4Б</option>
-          <option>5А</option><option>5Б</option>
-          <option>6А</option><option>6Б</option>
-          <option>7А</option><option>7Б</option>
-          <option>8А</option><option>8Б</option>
-          <option>9А</option><option>9Б</option>
-          <option>10А</option><option>10Б</option>
-          <option>11А</option><option>11Б</option>
-          <option>12А</option><option>12Б</option>
-        </select>
+      <div class="form-group"><label>Дарамтлагдсан сурагч <span class="req">*</span></label><input id="victim" type="text" placeholder="Овог нэр"/></div>
+      <div class="form-group"><label>Анги <span class="req">*</span></label>
+        <select id="victimClass"><option value="">-- Сонгох --</option><option>10А</option><option>10Б</option><option>10В</option><option>10Д</option><option>11А</option><option>11Б</option><option>11В</option><option>11Д</option><option>12А</option><option>12Б</option><option>12В</option><option>12Д</option></select>
       </div>
     </div>
-
     <div class="form-row">
-      <div class="form-group">
-        <label>Дарамтлагч сурагч <span class="req">*</span></label>
-        <input id="bully" type="text" placeholder="Овог нэр (мэдэгдэж байвал)"/>
-      </div>
-      <div class="form-group">
-        <label>Дарамтлагчийн анги</label>
-        <input id="bullyClass" type="text" placeholder="Жишээ: 8Б (мэдэгдэж байвал)"/>
-      </div>
+      <div class="form-group"><label>Дарамтлагч сурагч <span class="req">*</span></label><input id="bully" type="text" placeholder="Овог нэр (мэдэгдэж байвал)"/></div>
+      <div class="form-group"><label>Дарамтлагчийн анги</label><input id="bullyClass" type="text" placeholder="Жишээ: 8Б (мэдэгдэж байвал)"/></div>
     </div>
-
     <div class="form-row full">
-      <div class="form-group">
-        <label>Дарамтлалын төрөл <span class="req">*</span></label>
+      <div class="form-group"><label>Дарамтлалын төрөл <span class="req">*</span></label>
         <div class="chip-group" id="typeChips">
           <div class="chip red" onclick="toggleChip(this,'type')">👊 Бие махбодийн</div>
           <div class="chip red" onclick="toggleChip(this,'type')">💬 Үгээр доромжлох</div>
@@ -451,202 +254,87 @@ textarea{resize:vertical;min-height:100px;line-height:1.5;}
         </div>
       </div>
     </div>
-
     <div class="form-row full">
-      <div class="form-group">
-        <label>Хүндийн зэрэг <span class="req">*</span></label>
+      <div class="form-group"><label>Хүндийн зэрэг <span class="req">*</span></label>
         <div class="severity-select">
-          <div class="sev-opt s1" onclick="selectSev(this,1)">
-            <div class="sev-icon">🔵</div>
-            <div class="sev-label">АНХАН</div>
-          </div>
-          <div class="sev-opt s2" onclick="selectSev(this,2)">
-            <div class="sev-icon">🟢</div>
-            <div class="sev-label">ДУНД</div>
-          </div>
-          <div class="sev-opt s3" onclick="selectSev(this,3)">
-            <div class="sev-icon">🟡</div>
-            <div class="sev-label">ХҮНД</div>
-          </div>
-          <div class="sev-opt s4" onclick="selectSev(this,4)">
-            <div class="sev-icon">🔴</div>
-            <div class="sev-label">НЭН ХҮНД</div>
-          </div>
+          <div class="sev-opt s1" onclick="selectSev(this,1)"><div class="sev-icon">🔵</div><div class="sev-label">АНХАН</div></div>
+          <div class="sev-opt s2" onclick="selectSev(this,2)"><div class="sev-icon">🟢</div><div class="sev-label">ДУНД</div></div>
+          <div class="sev-opt s3" onclick="selectSev(this,3)"><div class="sev-icon">🟡</div><div class="sev-label">ХҮНД</div></div>
+          <div class="sev-opt s4" onclick="selectSev(this,4)"><div class="sev-icon">🔴</div><div class="sev-label">НЭН ХҮНД</div></div>
         </div>
       </div>
     </div>
-
-    <div class="form-row full">
-      <div class="form-group">
-        <label>Тохиолдсон газар, цаг <span class="req">*</span></label>
-        <input id="location" type="text" placeholder="Жишээ: Завсарлагын үеэр, дотуур байрны орцод..."/>
-      </div>
-    </div>
-
-    <div class="form-row full">
-      <div class="form-group">
-        <label>Дэлгэрэнгүй тайлбар <span class="req">*</span></label>
-        <textarea id="description" placeholder="Юу болсныг аль болох дэлгэрэнгүй бичнэ үү. Гэрч байсан бол тэдний нэрийг оруулж болно."></textarea>
-      </div>
-    </div>
-
+    <div class="form-row full"><div class="form-group"><label>Тохиолдсон газар, цаг <span class="req">*</span></label><input id="location" type="text" placeholder="Жишээ: Завсарлагын үеэр, дотуур байрны орцод..."/></div></div>
+    <div class="form-row full"><div class="form-group"><label>Дэлгэрэнгүй тайлбар <span class="req">*</span></label><textarea id="description" placeholder="Юу болсныг аль болох дэлгэрэнгүй бичнэ үү."></textarea></div></div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Тайлагнагчийн нэр</label>
-        <input id="reporter" type="text" placeholder="Таны нэр (заавал биш)"/>
-      </div>
-      <div class="form-group">
-        <label>Тайлагнагчийн үүрэг</label>
-        <select id="reporterRole">
-          <option value="">-- Сонгох --</option>
-          <option>Сурагч</option>
-          <option>Эцэг эх</option>
-          <option>Багш</option>
-          <option>Ажилтан</option>
-          <option>Нэрээ нуусан</option>
-        </select>
+      <div class="form-group"><label>Тайлагнагчийн нэр</label><input id="reporter" type="text" placeholder="Таны нэр (заавал биш)"/></div>
+      <div class="form-group"><label>Тайлагнагчийн үүрэг</label>
+        <select id="reporterRole"><option value="">-- Сонгох --</option><option>Сурагч</option><option>Эцэг эх</option><option>Багш</option><option>Ажилтан</option><option>Нэрээ нуусан</option></select>
       </div>
     </div>
-
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="goStep(2)">Үргэлжлүүлэх →</button>
-    </div>
+    <div class="btn-row"><button class="btn btn-primary" onclick="goStep(2)">Үргэлжлүүлэх →</button></div>
   </div>
 
-  <!-- ═══ STEP 2: БАРИМТ ═══ -->
+  <!-- STEP 2 -->
   <div id="panel2" class="panel" style="display:none;">
     <div class="panel-title"><span>📎</span> Нотлох баримт хавсаргах</div>
-
-    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()"
-         ondragover="event.preventDefault();this.classList.add('drag')"
-         ondragleave="this.classList.remove('drag')"
-         ondrop="handleDrop(event)">
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
       <div class="upload-icon">📁</div>
       <div class="upload-title">Файл хавсаргах</div>
       <div class="upload-sub">Зураг, видео, дуу бичлэг, дэлгэцийн зураг — дарах эсвэл чирч оруулах<br/>JPG, PNG, MP4, MP3, PDF · Дээд хэмжээ 20MB</div>
     </div>
     <input type="file" id="fileInput" multiple accept="image/*,video/*,audio/*,.pdf" onchange="handleFiles(this.files)"/>
     <div class="file-list" id="fileList"></div>
-
     <div style="margin-top:1.5rem;">
-      <div class="form-group">
-        <label>Гэрч байсан уу?</label>
+      <div class="form-group"><label>Гэрч байсан уу?</label>
         <div class="chip-group">
           <div class="chip" id="witYes" onclick="toggleWit('yes')">✅ Тийм, гэрч байсан</div>
           <div class="chip" id="witNo" onclick="toggleWit('no')">❌ Гэрч байгаагүй</div>
           <div class="chip" id="witUnk" onclick="toggleWit('unk')">❓ Мэдэгдэхгүй</div>
         </div>
       </div>
-      <div id="witnessBox" style="display:none;margin-top:0.75rem;">
-        <div class="form-group">
-          <label>Гэрчийн нэр(үүд)</label>
-          <input type="text" id="witnesses" placeholder="Гэрчүүдийн нэрийг таслалаар тусгаарлан бичнэ үү"/>
-        </div>
-      </div>
+      <div id="witnessBox" style="display:none;margin-top:0.75rem;"><div class="form-group"><label>Гэрчийн нэр(үүд)</label><input type="text" id="witnesses" placeholder="Гэрчүүдийн нэрийг таслалаар тусгаарлан бичнэ үү"/></div></div>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="goStep(1)">← Буцах</button>
       <button class="btn btn-primary" onclick="goStep(3)">Үргэлжлүүлэх →</button>
     </div>
   </div>
 
-  <!-- ═══ STEP 3: ШИЙДВЭР ═══ -->
+  <!-- STEP 3 -->
   <div id="panel3" class="panel" style="display:none;">
     <div class="panel-title"><span>⚖️</span> Тайлангийн орчин — Нуух эсвэл бүртгэх?</div>
-
-    <div class="hidden-notice">
-      <div class="hn-icon">ℹ️</div>
-      <div class="hn-text">
-        <strong>Нуусан</strong> тохиолдолд мэдээлэл зөвхөн нууц баазад хадгалагдана — нэр, анги нь нуугдаж, зөвхөн дугаар харагдана. Шаардлагатай үед мэргэжлийн ажилтан нөхцлийг шалгана.<br/>
-        <strong>Бүртгэсэн</strong> тохиолдолд ангийн багш болон сургалтын менежерт мэдэгдэл явуулна.
-      </div>
-    </div>
-
+    <div class="hidden-notice"><div class="hn-icon">ℹ️</div><div class="hn-text"><strong>Нуусан</strong> тохиолдолд мэдээлэл зөвхөн нууц баазад хадгалагдана.<br/><strong>Бүртгэсэн</strong> тохиолдолд ангийн багш болон сургалтын менежерт мэдэгдэл явуулна.</div></div>
     <div class="decision-grid" id="decisionGrid">
-      <div class="decision-card" id="card-hide" onclick="selectDecision('hide')">
-        <div class="dc-icon">🔒</div>
-        <div class="dc-title">Нуусан байдлаар хадгалах</div>
-        <div class="dc-desc">Мэдээлэл нь нууц баазад хадгалагдана. Нэр, анги харагдахгүй. Систем дотор дугаараар бүртгэнэ.</div>
-        <span class="dc-badge badge-amber">НУУЦ БҮРТГЭЛ</span>
-      </div>
-      <div class="decision-card" id="card-report" onclick="selectDecision('report')">
-        <div class="dc-icon">📤</div>
-        <div class="dc-title">Албан ёсоор бүртгэж мэдэгдэх</div>
-        <div class="dc-desc">Ангийн багш болон сургалтын менежерт нэн даруй мэдэгдэл явуулна. Баримт баазад бүртгэнэ.</div>
-        <span class="dc-badge badge-accent">МЭДЭГДЭЛ ЯВУУЛНА</span>
-      </div>
+      <div class="decision-card" id="card-hide" onclick="selectDecision('hide')"><div class="dc-icon">🔒</div><div class="dc-title">Нуусан байдлаар хадгалах</div><div class="dc-desc">Мэдээлэл нь нууц баазад хадгалагдана. Нэр, анги харагдахгүй.</div><span class="dc-badge badge-amber">НУУЦ БҮРТГЭЛ</span></div>
+      <div class="decision-card" id="card-report" onclick="selectDecision('report')"><div class="dc-icon">📤</div><div class="dc-title">Албан ёсоор бүртгэж мэдэгдэх</div><div class="dc-desc">Ангийн багш болон сургалтын менежерт нэн даруй мэдэгдэл явуулна.</div><span class="dc-badge badge-accent">МЭДЭГДЭЛ ЯВУУЛНА</span></div>
     </div>
-
-    <div id="decisionNote" style="display:none;" class="summary-box">
-      <div id="decisionNoteContent"></div>
-    </div>
-
+    <div id="decisionNote" style="display:none;" class="summary-box"><div id="decisionNoteContent"></div></div>
     <div class="btn-row">
       <button class="btn btn-secondary" onclick="goStep(2)">← Буцах</button>
       <button class="btn btn-primary" id="btn3next" onclick="goStep(4)" disabled>Үргэлжлүүлэх →</button>
     </div>
   </div>
 
-  <!-- ═══ STEP 4: МЭДЭГДЭЛ ═══ -->
+  <!-- STEP 4 -->
   <div id="panel4" class="panel" style="display:none;">
     <div class="panel-title"><span>📡</span> Мэдэгдэл явуулах — Дэс дараалал</div>
-
     <div id="hiddenModePanel" style="display:none;">
-      <div class="hidden-notice">
-        <div class="hn-icon">🔒</div>
-        <div class="hn-text">
-          Та <strong>нуусан байдлаар</strong> хадгалахаар сонгосон тул ямар нэг мэдэгдэл явуулахгүй. Тайлан зөвхөн нууц баазад хадгалагдана. Дугаараар эрэн сурвалжлах боломжтой.
-        </div>
-      </div>
+      <div class="hidden-notice"><div class="hn-icon">🔒</div><div class="hn-text">Та <strong>нуусан байдлаар</strong> хадгалахаар сонгосон тул ямар нэг мэдэгдэл явуулахгүй. Тайлан зөвхөн нууц баазад хадгалагдана.</div></div>
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="goStep(3)">← Буцах</button>
         <button class="btn btn-success" onclick="finalSubmit()">✓ Нууцаар хадгалах</button>
       </div>
     </div>
-
     <div id="reportModePanel" style="display:none;">
-      <p style="font-size:0.83rem;color:var(--text2);margin-bottom:1.25rem;line-height:1.6;">
-        Систем нь дараах дэс дарааллаар мэдэгдэл явуулна. <strong style="color:var(--amber);">Хэрэв ангийн багш хариу өгөхгүй бол</strong> сургалтын менежерт автоматаар дамжуулна.
-      </p>
-
+      <p style="font-size:0.83rem;color:var(--text2);margin-bottom:1.25rem;line-height:1.6;">Систем нь дараах дэс дарааллаар мэдэгдэл явуулна. <strong style="color:var(--amber);">Хэрэв ангийн багш хариу өгөхгүй бол</strong> сургалтын менежерт автоматаар дамжуулна.</p>
       <div class="notify-flow" id="notifyFlow">
-        <!-- Row 1: Class Teacher -->
-        <div class="notify-row" id="nr1">
-          <div class="nr-icon">👩‍🏫</div>
-          <div class="nr-info">
-            <div class="nr-title">Ангийн багш</div>
-            <div class="nr-desc" id="nrTeacherName">Ачаалж байна...</div>
-          </div>
-          <div class="nr-status st-waiting" id="nr1status">Хүлээгдэж байна</div>
-        </div>
-
+        <div class="notify-row" id="nr1"><div class="nr-icon">👩‍🏫</div><div class="nr-info"><div class="nr-title">Ангийн багш</div><div class="nr-desc" id="nrTeacherName">Ачаалж байна...</div></div><div class="nr-status st-waiting" id="nr1status">Хүлээгдэж байна</div></div>
         <div class="flow-arrow" id="arrow1">↓</div>
-
-        <!-- Row 2: If no response -->
-        <div class="notify-row skip" id="nr2">
-          <div class="nr-icon">⏱️</div>
-          <div class="nr-info">
-            <div class="nr-title">Хариу өгөөгүй бол — Эскалаци</div>
-            <div class="nr-desc">Ангийн багш 30 минутын дотор хариу өгөхгүй бол сургалтын менежерт дамжуулна</div>
-          </div>
-          <div class="nr-status st-skip" id="nr2status">Идэвхгүй</div>
-        </div>
-
+        <div class="notify-row skip" id="nr2"><div class="nr-icon">⏱️</div><div class="nr-info"><div class="nr-title">Хариу өгөөгүй бол — Эскалаци</div><div class="nr-desc">30 минутын дотор хариу өгөхгүй бол сургалтын менежерт дамжуулна</div></div><div class="nr-status st-skip" id="nr2status">Идэвхгүй</div></div>
         <div class="flow-arrow" id="arrow2">↓</div>
-
-        <!-- Row 3: Academic Manager -->
-        <div class="notify-row skip" id="nr3">
-          <div class="nr-icon">👨‍💼</div>
-          <div class="nr-info">
-            <div class="nr-title">Сургалтын менежер</div>
-            <div class="nr-desc">Д. Болормаа — Сургалтын менежер, утас: 9911-2244</div>
-          </div>
-          <div class="nr-status st-skip" id="nr3status">Хүлээгдэж байна</div>
-        </div>
+        <div class="notify-row skip" id="nr3"><div class="nr-icon">👨‍💼</div><div class="nr-info"><div class="nr-title">Сургалтын менежер</div><div class="nr-desc">Д. Болормаа — Сургалтын менежер, утас: 9911-2244</div></div><div class="nr-status st-skip" id="nr3status">Хүлээгдэж байна</div></div>
       </div>
-
-      <!-- DEMO: Simulate teacher not responding -->
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:1.25rem;">
         <div style="font-size:0.78rem;font-weight:700;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">🎮 Симуляц — Туршиж үзэх</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -654,7 +342,6 @@ textarea{resize:vertical;min-height:100px;line-height:1.5;}
           <button class="btn btn-secondary" style="padding:6px 14px;font-size:0.8rem;" onclick="simTeacherNoResponse()">⏰ Багш хариу өгөөгүй → Эскалаци</button>
         </div>
       </div>
-
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="goStep(3)">← Буцах</button>
         <button class="btn btn-danger" id="btnSendNotif" onclick="startNotification()">📤 Мэдэгдэл явуулах</button>
@@ -662,15 +349,14 @@ textarea{resize:vertical;min-height:100px;line-height:1.5;}
     </div>
   </div>
 
-  <!-- ═══ STEP 5: ДУУСГАВАР ═══ -->
+  <!-- STEP 5 -->
   <div id="panel5" class="panel" style="display:none;">
     <div class="success-panel">
       <div class="success-icon" id="successIcon">✓</div>
       <div class="success-title" id="successTitle">Амжилттай бүртгэгдлээ</div>
       <div class="success-sub" id="successSub">Тайлан амжилттай хадгалагдлаа.</div>
-
       <div class="summary-box" style="text-align:left;max-width:500px;margin:0 auto 1.5rem;">
-        <div class="summary-row"><span class="sr-key">Тохиолдлын дугаар</span><span class="sr-val case-id" id="caseIdDisplay" style="padding:2px 8px;border-radius:6px;font-size:0.78rem;"></span></div>
+        <div class="summary-row"><span class="sr-key">Тохиолдлын дугаар</span><span class="sr-val" id="caseIdDisplay" style="font-family:var(--mono);font-size:0.78rem;color:var(--accent2);"></span></div>
         <div class="summary-row"><span class="sr-key">Хохирогч</span><span class="sr-val" id="sumVictim">—</span></div>
         <div class="summary-row"><span class="sr-key">Анги</span><span class="sr-val" id="sumClass">—</span></div>
         <div class="summary-row"><span class="sr-key">Дарамтлалын төрөл</span><span class="sr-val" id="sumType">—</span></div>
@@ -679,267 +365,95 @@ textarea{resize:vertical;min-height:100px;line-height:1.5;}
         <div class="summary-row"><span class="sr-key">Мэдэгдэл явуулсан</span><span class="sr-val" id="sumNotified">—</span></div>
         <div class="summary-row"><span class="sr-key">Огноо, цаг</span><span class="sr-val" id="sumTime">—</span></div>
       </div>
-
       <button class="btn btn-primary" onclick="resetForm()" style="margin:0 auto;">+ Шинэ тайлан нэмэх</button>
     </div>
   </div>
-
-</div><!-- /page -->
-
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <span id="toastIcon">✓</span>
-  <span id="toastMsg">Амжилттай</span>
 </div>
 
+<div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMsg">Амжилттай</span></div>
+
 <script>
-// ── CLOCK ──
-function updateClock(){
-  const n=new Date();
-  document.getElementById('clock').textContent=
-    [n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+/* AUTH */
+function initAuthNav() {
+  const loggedIn = sessionStorage.getItem('ss_loggedIn') === '1';
+  const email = sessionStorage.getItem('ss_email') || '';
+  const loginBtn = document.getElementById('nav-login-btn');
+  const logoutBtn = document.getElementById('nav-logout-btn');
+  const userPill = document.getElementById('nav-user-pill');
+  if (loggedIn) {
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+    if (userPill) { userPill.classList.add('show'); document.getElementById('nav-avatar').textContent = email ? email[0].toUpperCase() : '?'; document.getElementById('nav-username').textContent = email.split('@')[0] || 'Хэрэглэгч'; }
+    // Pre-fill reporter field if empty
+    const reporterField = document.getElementById('reporter');
+    if (reporterField && !reporterField.value) reporterField.value = email.split('@')[0] || '';
+  } else {
+    if (loginBtn) loginBtn.style.display = 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (userPill) userPill.classList.remove('show');
+  }
 }
-updateClock();setInterval(updateClock,1000);
+function doLogout() { sessionStorage.removeItem('ss_loggedIn'); sessionStorage.removeItem('ss_email'); initAuthNav(); }
 
-// ── STATE ──
-let curStep=1;
-let selectedTypes=[];
-let selectedSev=0;
-let selectedDecision='';
-let files=[];
-let caseId='';
+/* CLOCK */
+function updateClock() { const n=new Date(); document.getElementById('clock').textContent=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':'); }
+updateClock(); setInterval(updateClock,1000);
 
-// ── STEP NAV ──
-function goStep(n){
-  // validate step 1
-  if(n>1 && curStep===1){
-    if(!document.getElementById('victim').value.trim()||
-       !document.getElementById('victimClass').value||
-       !document.getElementById('bully').value.trim()||
-       selectedTypes.length===0||selectedSev===0||
-       !document.getElementById('location').value.trim()||
-       !document.getElementById('description').value.trim()){
-      showToast('⚠️','Бүх заавал талбарыг бөглөнө үү','amber');
-      return;
+let curStep=1, selectedTypes=[], selectedSev=0, selectedDecision='', files=[], caseId='';
+
+function goStep(n) {
+  if (n>1 && curStep===1) {
+    if (!document.getElementById('victim').value.trim()||!document.getElementById('victimClass').value||!document.getElementById('bully').value.trim()||selectedTypes.length===0||selectedSev===0||!document.getElementById('location').value.trim()||!document.getElementById('description').value.trim()) {
+      showToast('⚠️','Бүх заавал талбарыг бөглөнө үү','amber'); return;
     }
   }
-  if(n>3 && selectedDecision==='') return;
-
-  // hide all
-  for(let i=1;i<=5;i++){
-    document.getElementById('panel'+i).style.display='none';
-  }
+  if (n>3 && selectedDecision==='') return;
+  for(let i=1;i<=5;i++) document.getElementById('panel'+i).style.display='none';
   document.getElementById('panel'+n).style.display='block';
-
-  // update steps
-  for(let i=1;i<=5;i++){
-    const el=document.getElementById('step'+i);
-    el.className='step';
-    if(i<n) el.classList.add('done');
-    else if(i===n) el.classList.add('active');
-  }
-
-  // setup panels
-  if(n===3) setupDecisionPanel();
+  for(let i=1;i<=5;i++) { const el=document.getElementById('step'+i); el.className='step'; if(i<n)el.classList.add('done'); else if(i===n)el.classList.add('active'); }
   if(n===4) setupNotifyPanel();
   if(n===5) setupSuccess();
-
-  curStep=n;
-  window.scrollTo({top:0,behavior:'smooth'});
+  curStep=n; window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ── CHIPS ──
-function toggleChip(el,group){
-  el.classList.toggle('selected');
-  const label=el.textContent.trim();
-  if(el.classList.contains('selected')){
-    selectedTypes.push(label);
-  } else {
-    selectedTypes=selectedTypes.filter(t=>t!==label);
-  }
-}
+function toggleChip(el,group) { el.classList.toggle('selected'); const label=el.textContent.trim(); if(el.classList.contains('selected')){selectedTypes.push(label);}else{selectedTypes=selectedTypes.filter(t=>t!==label);} }
+function selectSev(el,lvl) { document.querySelectorAll('.sev-opt').forEach(e=>e.classList.remove('sel')); el.classList.add('sel'); selectedSev=lvl; }
+function toggleWit(v) { ['Yes','No','Unk'].forEach(x=>{ document.getElementById('wit'+x).classList.toggle('selected',x.toLowerCase()===v); }); document.getElementById('witnessBox').style.display=(v==='yes'?'block':'none'); }
 
-// ── SEVERITY ──
-function selectSev(el,lvl){
-  document.querySelectorAll('.sev-opt').forEach(e=>{
-    e.classList.remove('sel');
-  });
-  el.classList.add('sel');
-  selectedSev=lvl;
-}
+function handleFiles(fl) { Array.from(fl).forEach(f=>{ if(files.length>=6){showToast('⚠️','Дээд тал нь 6 файл','amber');return;} if(f.size>20*1024*1024){showToast('⚠️','Файлын хэмжээ 20MB-с хэтрэхгүй','amber');return;} files.push(f); }); renderFiles(); }
+function handleDrop(e) { e.preventDefault(); document.getElementById('uploadZone').classList.remove('drag'); handleFiles(e.dataTransfer.files); }
+function renderFiles() { const list=document.getElementById('fileList'); list.innerHTML=''; files.forEach((f,i)=>{ const ext=f.name.split('.').pop().toLowerCase(); const icon=ext==='pdf'?'📄':['mp4','mov'].includes(ext)?'🎬':['mp3','wav'].includes(ext)?'🎵':'🖼️'; const sz=f.size>1024*1024?(f.size/1024/1024).toFixed(1)+'MB':(f.size/1024).toFixed(0)+'KB'; const div=document.createElement('div'); div.className='file-item'; div.innerHTML=`<span class="file-icon">${icon}</span><span class="file-name">${f.name}</span><span class="file-size">${sz}</span><button class="file-del" onclick="removeFile(${i})">✕</button>`; list.appendChild(div); }); }
+function removeFile(i) { files.splice(i,1); renderFiles(); }
 
-// ── WITNESS ──
-function toggleWit(v){
-  ['yes','no','unk'].forEach(x=>{
-    document.getElementById('wit'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('selected',x===v);
-  });
-  document.getElementById('witnessBox').style.display=(v==='yes'?'block':'none');
-}
-
-// ── FILES ──
-function handleFiles(fl){
-  Array.from(fl).forEach(f=>{
-    if(files.length>=6){showToast('⚠️','Дээд тал нь 6 файл','amber');return;}
-    if(f.size>20*1024*1024){showToast('⚠️','Файлын хэмжээ 20MB-с хэтрэхгүй байх ёстой','amber');return;}
-    files.push(f);
-  });
-  renderFiles();
-}
-function handleDrop(e){
-  e.preventDefault();
-  document.getElementById('uploadZone').classList.remove('drag');
-  handleFiles(e.dataTransfer.files);
-}
-function renderFiles(){
-  const list=document.getElementById('fileList');
-  list.innerHTML='';
-  files.forEach((f,i)=>{
-    const ext=f.name.split('.').pop().toLowerCase();
-    const icon=ext==='pdf'?'📄':['mp4','mov','avi'].includes(ext)?'🎬':['mp3','wav','m4a'].includes(ext)?'🎵':'🖼️';
-    const sz=f.size>1024*1024?(f.size/1024/1024).toFixed(1)+'MB':(f.size/1024).toFixed(0)+'KB';
-    const div=document.createElement('div');div.className='file-item';
-    div.innerHTML=`<span class="file-icon">${icon}</span><span class="file-name">${f.name}</span><span class="file-size">${sz}</span><button class="file-del" onclick="removeFile(${i})">✕</button>`;
-    list.appendChild(div);
-  });
-}
-function removeFile(i){files.splice(i,1);renderFiles();}
-
-// ── DECISION ──
-function selectDecision(d){
+function selectDecision(d) {
   selectedDecision=d;
   document.getElementById('card-hide').className='decision-card'+(d==='hide'?' selected-hide':'');
   document.getElementById('card-report').className='decision-card'+(d==='report'?' selected-report':'');
   document.getElementById('btn3next').disabled=false;
-
   const noteBox=document.getElementById('decisionNote');
   const noteContent=document.getElementById('decisionNoteContent');
   noteBox.style.display='block';
-
-  if(d==='hide'){
-    noteContent.innerHTML=`<div style="display:flex;gap:10px;align-items:center;">
-      <span style="font-size:1.4rem;">🔒</span>
-      <div>
-        <div style="font-weight:800;color:var(--amber);font-size:0.88rem;">Нуусан байдлаар хадгалах</div>
-        <div style="font-size:0.78rem;color:var(--text2);margin-top:3px;line-height:1.5;">Мэдээлэл зөвхөн нууц баазад хадгалагдана. Ямар нэг мэдэгдэл явуулахгүй. Тохиолдлын дугаараар шалгах боломжтой.</div>
-      </div>
-    </div>`;
-  } else {
-    noteContent.innerHTML=`<div style="display:flex;gap:10px;align-items:center;">
-      <span style="font-size:1.4rem;">📤</span>
-      <div>
-        <div style="font-weight:800;color:var(--accent2);font-size:0.88rem;">Албан ёсоор мэдэгдэл явуулна</div>
-        <div style="font-size:0.78rem;color:var(--text2);margin-top:3px;line-height:1.5;">Ангийн багшид нэн даруй мэдэгдэл явуулна. Хэрэв хариу өгөхгүй бол сургалтын менежерт автоматаар дамжуулна.</div>
-      </div>
-    </div>`;
-  }
+  if(d==='hide'){noteContent.innerHTML=`<div style="display:flex;gap:10px;align-items:center;"><span style="font-size:1.4rem;">🔒</span><div><div style="font-weight:800;color:var(--amber);font-size:0.88rem;">Нуусан байдлаар хадгалах</div><div style="font-size:0.78rem;color:var(--text2);margin-top:3px;line-height:1.5;">Мэдээлэл зөвхөн нууц баазад хадгалагдана.</div></div></div>`;}
+  else{noteContent.innerHTML=`<div style="display:flex;gap:10px;align-items:center;"><span style="font-size:1.4rem;">📤</span><div><div style="font-weight:800;color:var(--accent2);font-size:0.88rem;">Албан ёсоор мэдэгдэл явуулна</div><div style="font-size:0.78rem;color:var(--text2);margin-top:3px;line-height:1.5;">Ангийн багшид нэн даруй мэдэгдэл явуулна.</div></div></div>`;}
 }
 
-// ── SETUP NOTIFY PANEL ──
-function setupNotifyPanel(){
-  if(selectedDecision==='hide'){
-    document.getElementById('hiddenModePanel').style.display='block';
-    document.getElementById('reportModePanel').style.display='none';
-  } else {
-    document.getElementById('hiddenModePanel').style.display='none';
-    document.getElementById('reportModePanel').style.display='block';
-    const cls=document.getElementById('victimClass').value;
-    document.getElementById('nrTeacherName').textContent=getTeacher(cls);
-    // reset simulation
-    resetNotifyUI();
-  }
+function setupNotifyPanel() {
+  if(selectedDecision==='hide'){document.getElementById('hiddenModePanel').style.display='block';document.getElementById('reportModePanel').style.display='none';}
+  else{document.getElementById('hiddenModePanel').style.display='none';document.getElementById('reportModePanel').style.display='block';const cls=document.getElementById('victimClass').value;document.getElementById('nrTeacherName').textContent=getTeacher(cls);resetNotifyUI();}
 }
-function getTeacher(cls){
-  const teachers={
-    '1А':'Д. Нарансувд — Утас: 9900-1111',
-    '2А':'С. Энхтуяа — Утас: 9900-2222',
-    '3А':'Т. Буянтогтох — Утас: 9900-3333',
-    '4А':'М. Солонго — Утас: 9900-4444',
-    '5А':'Г. Мөнхзул — Утас: 9900-5555',
-    '6А':'Б. Оюунцэцэг — Утас: 9900-6666',
-    '7А':'Р. Энхжаргал — Утас: 9900-7777',
-    '8А':'Ц. Батдэлгэр — Утас: 9900-8888',
-    '9А':'Н. Лхагвасүрэн — Утас: 9900-9999',
-    '10А':'А. Түмэнбаяр — Утас: 9911-0011',
-    '11А':'Х. Гантулга — Утас: 9911-0022',
-    '12А':'Ж. Даваасүрэн — Утас: 9911-0033',
-  };
-  const key=cls||'5А';
-  return teachers[key]||'Ангийн багш — Утас: 9900-'+cls;
-}
-function resetNotifyUI(){
-  setNR(1,'st-waiting','Хүлээгдэж байна','');
-  setNR(2,'st-skip','Идэвхгүй','skip');
-  setNR(3,'st-skip','Хүлээгдэж байна','skip');
-  document.getElementById('arrow1').className='flow-arrow';
-  document.getElementById('arrow2').className='flow-arrow';
-  document.getElementById('btnSendNotif').disabled=false;
-  document.getElementById('btnSendNotif').textContent='📤 Мэдэгдэл явуулах';
-}
-function setNR(n,statusClass,statusText,rowClass){
-  const el=document.getElementById('nr'+n);
-  el.className='notify-row'+(rowClass?' '+rowClass:'');
-  const st=document.getElementById('nr'+n+'status');
-  st.className='nr-status '+statusClass;
-  st.textContent=statusText;
-}
+function getTeacher(cls){const t={'10А':'А. Түмэнбаяр — Утас: 9911-0011','11А':'Х. Гантулга — Утас: 9911-0022','12А':'Ж. Даваасүрэн — Утас: 9911-0033'};return t[cls]||'Ангийн багш — Утас: 9900-'+cls;}
+function resetNotifyUI(){setNR(1,'st-waiting','Хүлээгдэж байна','');setNR(2,'st-skip','Идэвхгүй','skip');setNR(3,'st-skip','Хүлээгдэж байна','skip');document.getElementById('arrow1').className='flow-arrow';document.getElementById('arrow2').className='flow-arrow';document.getElementById('btnSendNotif').disabled=false;document.getElementById('btnSendNotif').textContent='📤 Мэдэгдэл явуулах';}
+function setNR(n,statusClass,statusText,rowClass){const el=document.getElementById('nr'+n);el.className='notify-row'+(rowClass?' '+rowClass:'');const st=document.getElementById('nr'+n+'status');st.className='nr-status '+statusClass;st.textContent=statusText;}
 
-// ── START NOTIFICATION ──
-function startNotification(){
-  document.getElementById('btnSendNotif').disabled=true;
-  document.getElementById('btnSendNotif').textContent='Явуулж байна...';
-  setNR(1,'st-sending','Явуулж байна...','active');
-  showToast('📤','Ангийн багшид мэдэгдэл явуулж байна...','accent');
-}
+function startNotification(){document.getElementById('btnSendNotif').disabled=true;document.getElementById('btnSendNotif').textContent='Явуулж байна...';setNR(1,'st-sending','Явуулж байна...','active');showToast('📤','Ангийн багшид мэдэгдэл явуулж байна...','accent');}
+function simTeacherResponds(){setNR(1,'st-sent','✓ Хариу өгсөн','active');setNR(2,'st-skip','Шаардлагагүй','skip');setNR(3,'st-skip','Шаардлагагүй','skip');document.getElementById('arrow1').className='flow-arrow active';document.getElementById('btnSendNotif').disabled=true;showToast('✅','Ангийн багш хариу өгсөн!','green');setTimeout(()=>{document.getElementById('btnSendNotif').textContent='✓ Дуусгавар →';document.getElementById('btnSendNotif').disabled=false;document.getElementById('btnSendNotif').onclick=()=>finalSubmit();document.getElementById('btnSendNotif').className='btn btn-success';},1200);}
+function simTeacherNoResponse(){setNR(1,'st-waiting','⏰ Хариугүй','');setTimeout(()=>{setNR(2,'st-escalate','⬆ Эскалаци','escalated');document.getElementById('arrow1').className='flow-arrow escalated-arrow';showToast('⚠️','Ангийн багш хариу өгөөгүй — Дамжуулж байна...','amber');setTimeout(()=>{setNR(3,'st-sending','Явуулж байна...','active');document.getElementById('arrow2').className='flow-arrow escalated-arrow';setTimeout(()=>{setNR(3,'st-sent','✓ Мэдэгдэл хүргэгдсэн','active');showToast('✅','Сургалтын менежерт мэдэгдэл хүргэгдлээ!','green');document.getElementById('btnSendNotif').textContent='✓ Дуусгавар →';document.getElementById('btnSendNotif').disabled=false;document.getElementById('btnSendNotif').onclick=()=>finalSubmit();document.getElementById('btnSendNotif').className='btn btn-success';},1500);},1500);},800);}
 
-// ── SIMULATE: TEACHER RESPONDS ──
-function simTeacherResponds(){
-  setNR(1,'st-sent','✓ Хариу өгсөн','active');
-  setNR(2,'st-skip','Шаардлагагүй','skip');
-  setNR(3,'st-skip','Шаардлагагүй','skip');
-  document.getElementById('arrow1').className='flow-arrow active';
-  document.getElementById('btnSendNotif').disabled=true;
-  showToast('✅','Ангийн багш хариу өгсөн! Асуудлыг хариуцах боломжтой.','green');
-  setTimeout(()=>{
-    document.getElementById('btnSendNotif').textContent='✓ Дуусгавар →';
-    document.getElementById('btnSendNotif').disabled=false;
-    document.getElementById('btnSendNotif').onclick=()=>finalSubmit();
-    document.getElementById('btnSendNotif').className='btn btn-success';
-  },1200);
-}
-
-// ── SIMULATE: NO RESPONSE → ESCALATE ──
-function simTeacherNoResponse(){
-  setNR(1,'st-waiting','⏰ Хариугүй','');
-  setTimeout(()=>{
-    setNR(2,'st-escalate','⬆ Эскалаци','escalated');
-    document.getElementById('arrow1').className='flow-arrow escalated-arrow';
-    showToast('⚠️','Ангийн багш хариу өгөөгүй — Сургалтын менежерт дамжуулж байна...','amber');
-    setTimeout(()=>{
-      setNR(3,'st-sending','Явуулж байна...','active');
-      document.getElementById('arrow2').className='flow-arrow escalated-arrow';
-      setTimeout(()=>{
-        setNR(3,'st-sent','✓ Мэдэгдэл хүргэгдсэн','active');
-        showToast('✅','Сургалтын менежерт мэдэгдэл хүргэгдлээ!','green');
-        document.getElementById('btnSendNotif').textContent='✓ Дуусгавар →';
-        document.getElementById('btnSendNotif').disabled=false;
-        document.getElementById('btnSendNotif').onclick=()=>finalSubmit();
-        document.getElementById('btnSendNotif').className='btn btn-success';
-      },1500);
-    },1500);
-  },800);
-}
-
-// ── FINAL SUBMIT ──
-function finalSubmit(){
-  caseId='BUL-'+Date.now().toString().slice(-7);
-  goStep(5);
-}
-function setupDecisionPanel(){/* already reactive */}
+function finalSubmit(){caseId='BUL-'+Date.now().toString().slice(-7);goStep(5);}
 function setupSuccess(){
   const sev=['','🔵 Анхан','🟢 Дунд','🟡 Хүнд','🔴 Нэн хүнд'];
   const now=new Date();
   const ts=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-
   document.getElementById('caseIdDisplay').textContent=caseId;
   document.getElementById('sumVictim').textContent=document.getElementById('victim').value||'—';
   document.getElementById('sumClass').textContent=document.getElementById('victimClass').value||'—';
@@ -948,49 +462,26 @@ function setupSuccess(){
   document.getElementById('sumDecision').textContent=selectedDecision==='hide'?'🔒 Нуусан байдлаар хадгалсан':'📤 Албан ёсоор бүртгэсэн';
   document.getElementById('sumNotified').textContent=selectedDecision==='hide'?'Мэдэгдэл явуулаагүй':'Ангийн багш болон менежер';
   document.getElementById('sumTime').textContent=ts;
-
-  if(selectedDecision==='hide'){
-    document.getElementById('successIcon').textContent='🔒';
-    document.getElementById('successTitle').textContent='Нуусан байдлаар хадгалагдлаа';
-    document.getElementById('successSub').textContent='Мэдээлэл нууц баазад хадгалагдлаа. Ямар нэг мэдэгдэл явуулаагүй болно. Тохиолдлын дугаараар шалгах боломжтой.';
-  } else {
-    document.getElementById('successIcon').textContent='✓';
-    document.getElementById('successTitle').textContent='Амжилттай бүртгэгдэж мэдэгдэл явуулагдлаа';
-    document.getElementById('successSub').textContent='Тайлан баазад хадгалагдаж, ангийн багш болон сургалтын менежерт мэдэгдэл явуулагдлаа.';
-  }
+  if(selectedDecision==='hide'){document.getElementById('successIcon').textContent='🔒';document.getElementById('successTitle').textContent='Нуусан байдлаар хадгалагдлаа';document.getElementById('successSub').textContent='Мэдээлэл нууц баазад хадгалагдлаа.';}
+  else{document.getElementById('successIcon').textContent='✓';document.getElementById('successTitle').textContent='Амжилттай бүртгэгдэж мэдэгдэл явуулагдлаа';document.getElementById('successSub').textContent='Тайлан баазад хадгалагдаж, мэдэгдэл явуулагдлаа.';}
 }
 
-// ── RESET ──
 function resetForm(){
-  document.getElementById('victim').value='';
-  document.getElementById('victimClass').value='';
-  document.getElementById('bully').value='';
-  document.getElementById('bullyClass').value='';
-  document.getElementById('location').value='';
-  document.getElementById('description').value='';
-  document.getElementById('reporter').value='';
-  document.getElementById('reporterRole').value='';
+  ['victim','bully','bullyClass','location','description','reporter'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('victimClass').value='';document.getElementById('reporterRole').value='';
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
   document.querySelectorAll('.sev-opt').forEach(c=>c.classList.remove('sel'));
-  selectedTypes=[];selectedSev=0;selectedDecision='';files=[];
-  renderFiles();
+  selectedTypes=[];selectedSev=0;selectedDecision='';files=[];renderFiles();
   document.getElementById('witnessBox').style.display='none';
   document.getElementById('decisionNote').style.display='none';
   document.getElementById('btn3next').disabled=true;
   goStep(1);
 }
 
-// ── TOAST ──
-function showToast(icon,msg,type){
-  const t=document.getElementById('toast');
-  const colors={green:'var(--green)',amber:'var(--amber)',accent:'var(--accent2)',red:'var(--red)'};
-  document.getElementById('toastIcon').textContent=icon;
-  document.getElementById('toastMsg').textContent=msg;
-  document.getElementById('toastIcon').style.color=colors[type]||colors.green;
-  t.classList.add('show');
-  clearTimeout(t._t);
-  t._t=setTimeout(()=>t.classList.remove('show'),3200);
-}
+function showToast(icon,msg,type){const t=document.getElementById('toast');const colors={green:'var(--green)',amber:'var(--amber)',accent:'var(--accent2)',red:'var(--red)'};document.getElementById('toastIcon').textContent=icon;document.getElementById('toastMsg').textContent=msg;document.getElementById('toastIcon').style.color=colors[type]||colors.green;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);}
+
+// Init after DOM ready
+initAuthNav();
 </script>
 </body>
 </html>

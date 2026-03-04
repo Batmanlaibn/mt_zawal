@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Холбоо барих — SafeSchool</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --bg:#050810; --bg2:#0a0d1a; --bg3:#0f1426;
+  --surface:rgba(255,255,255,0.04); --surface2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
+  --red:#ff3b5c; --red2:#ff6b84; --blue:#3b7fff; --blue2:#6fa3ff;
+  --teal:#00d4aa; --amber:#ffb340;
+  --text:#f0f4ff; --muted:rgba(180,195,235,0.6); --dim:rgba(100,120,170,0.35);
+  --font:'Syne',sans-serif; --body:'DM Sans',sans-serif;
+}
+html,body { min-height:100vh; font-family:var(--body); background:var(--bg); color:var(--text); overflow-x:hidden; }
+.scene { position:fixed; inset:0; z-index:0; background: radial-gradient(ellipse 70% 55% at 10% 20%,rgba(59,127,255,0.09) 0%,transparent 55%), radial-gradient(ellipse 60% 50% at 90% 80%,rgba(0,212,170,0.07) 0%,transparent 50%), radial-gradient(ellipse 50% 40% at 55% 5%,rgba(255,59,92,0.06) 0%,transparent 45%), #050810; }
+.noise { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.02; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:100; height:68px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(1.5rem,5vw,3.5rem); background:rgba(5,8,16,0.6); backdrop-filter:blur(24px); border-bottom:1px solid var(--border); }
+.nb { display:flex; align-items:center; gap:11px; text-decoration:none; }
+.bi { width:38px; height:38px; border-radius:11px; background:linear-gradient(135deg,var(--red),var(--red2)); display:flex; align-items:center; justify-content:center; font-size:1.1rem; box-shadow:0 0 18px rgba(255,59,92,0.35); }
+.bn { font-family:var(--font); font-weight:800; font-size:1.05rem; }
+.bn em { font-style:normal; color:var(--red2); }
+
+.nav-actions { display:flex; align-items:center; gap:0.75rem; }
+.nav-btn { padding:0.5rem 1.2rem; border-radius:100px; font-family:var(--body); font-size:0.85rem; font-weight:600; cursor:pointer; border:none; transition:all 0.2s; text-decoration:none; display:inline-flex; align-items:center; }
+.nb-ghost { background:transparent; color:var(--muted); border:1px solid var(--border2); }
+.nb-ghost:hover { color:var(--text); background:var(--surface2); }
+.nb-logout { background:rgba(255,59,92,0.1); color:var(--red2); border:1px solid rgba(255,59,92,0.25); }
+.nb-logout:hover { background:rgba(255,59,92,0.18); }
+
+.nav-back { display:flex; align-items:center; gap:7px; color:var(--muted); font-size:0.85rem; font-weight:500; text-decoration:none; padding:8px 16px; border-radius:10px; border:1px solid var(--border); background:var(--surface); transition:all 0.2s; }
+.nav-back:hover { color:var(--text); background:var(--surface2); border-color:var(--border2); }
+
+.nav-user-pill { display:none; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid var(--border2); border-radius:100px; padding:5px 14px 5px 8px; }
+.nav-user-pill.show { display:flex; }
+.nup-avatar { width:24px; height:24px; border-radius:50%; background:linear-gradient(135deg,var(--blue),var(--teal)); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700; color:#fff; }
+.nup-name { font-size:0.78rem; font-weight:600; color:var(--text); max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* PAGE */
+.page { position:relative; z-index:1; min-height:100vh; padding:68px 1.5rem 4rem; max-width:900px; margin:0 auto; }
+
+/* HERO */
+.hero { text-align:center; padding:3.5rem 0 2.5rem; animation:riseIn 0.7s ease both; }
+@keyframes riseIn { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+.h-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(59,127,255,0.1); border:1px solid rgba(59,127,255,0.25); border-radius:100px; padding:5px 16px; font-size:0.73rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--blue2); margin-bottom:1.5rem; }
+.h-title { font-family:var(--font); font-size:clamp(2rem,5vw,3.2rem); font-weight:800; letter-spacing:-0.04em; line-height:1.08; color:var(--text); margin-bottom:0.9rem; }
+.h-title .acc { background:linear-gradient(90deg,var(--blue2),var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.h-sub { font-size:1rem; color:var(--muted); line-height:1.65; max-width:440px; margin:0 auto; }
+
+/* CONTACT CARDS */
+.contact-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem; animation:riseIn 0.7s ease 0.15s both; }
+.cc { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:1.6rem 1.4rem; text-align:center; transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s; position:relative; overflow:hidden; }
+.cc::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; opacity:0; transition:opacity 0.25s; }
+.cc:hover { transform:translateY(-5px); box-shadow:0 20px 50px rgba(0,0,0,0.4); }
+.cc:hover::before { opacity:1; }
+.cc-email::before{background:linear-gradient(90deg,var(--blue),var(--blue2));} .cc-email:hover{border-color:rgba(59,127,255,0.3);}
+.cc-phone::before{background:linear-gradient(90deg,var(--teal),#00f0c0);} .cc-phone:hover{border-color:rgba(0,212,170,0.3);}
+.cc-chat::before{background:linear-gradient(90deg,var(--amber),#ffd080);} .cc-chat:hover{border-color:rgba(255,179,64,0.3);}
+.cc-icon { font-size:2rem; margin-bottom:0.8rem; display:block; }
+.cc-type { font-size:0.64rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.5rem; }
+.cct-b{color:var(--blue2);} .cct-t{color:var(--teal);} .cct-a{color:var(--amber);}
+.cc-main { font-size:0.9rem; font-weight:600; color:var(--text); margin-bottom:0.35rem; }
+.cc-desc { font-size:0.75rem; color:var(--muted); margin-bottom:1rem; }
+.cc-link { display:inline-block; padding:7px 18px; border-radius:10px; font-size:0.8rem; font-weight:600; text-decoration:none; transition:all 0.2s; }
+.cl-b{background:rgba(59,127,255,0.12);border:1px solid rgba(59,127,255,0.2);color:var(--blue2);} .cl-b:hover{background:rgba(59,127,255,0.2);}
+.cl-t{background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.2);color:var(--teal);} .cl-t:hover{background:rgba(0,212,170,0.18);}
+.cl-a{background:rgba(255,179,64,0.1);border:1px solid rgba(255,179,64,0.2);color:var(--amber);} .cl-a:hover{background:rgba(255,179,64,0.18);}
+
+/* MAIN ROW */
+.main-row { display:grid; grid-template-columns:1fr 320px; gap:1.2rem; animation:riseIn 0.7s ease 0.3s both; }
+.form-panel { background:var(--surface); border:1px solid var(--border); border-radius:22px; padding:2rem 1.8rem; box-shadow:0 24px 60px rgba(0,0,0,0.3); }
+.fp-title { font-family:var(--font); font-size:1.05rem; font-weight:700; color:var(--text); margin-bottom:0.3rem; }
+.fp-sub { font-size:0.83rem; color:var(--muted); margin-bottom:1.5rem; }
+.field { position:relative; margin-bottom:12px; }
+.f-ico { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:0.9rem; color:var(--dim); pointer-events:none; z-index:2; transition:color 0.25s; }
+.field input,.field select,.field textarea { width:100%; padding:13px 14px 13px 42px; background:rgba(255,255,255,0.04); border:1.5px solid var(--border); border-radius:13px; color:var(--text); font-family:var(--body); font-size:0.88rem; outline:none; appearance:none; transition:all 0.25s; }
+.field input::placeholder,.field textarea::placeholder { color:var(--dim); }
+.field input:focus,.field select:focus,.field textarea:focus { border-color:var(--blue2); background:rgba(59,127,255,0.06); box-shadow:0 0 0 4px rgba(59,127,255,0.1); }
+.field textarea { resize:vertical; min-height:108px; padding-top:13px; line-height:1.55; }
+.field label { position:absolute; left:42px; top:50%; transform:translateY(-50%); font-size:0.88rem; color:var(--dim); pointer-events:none; transition:all 0.22s; background:transparent; padding:0 4px; }
+.field input::placeholder { color:transparent; }
+.field input:focus~label,.field input:not(:placeholder-shown)~label { top:0; font-size:0.7rem; font-weight:600; color:var(--blue2); background:#0a0d1a; letter-spacing:0.02em; }
+.field.ta label { top:14px; transform:none; }
+.field.ta textarea:focus~label,.field.ta textarea:not(:placeholder-shown)~label { top:-6px; font-size:0.7rem; font-weight:600; color:var(--blue2); background:#0a0d1a; }
+.sel-wrap { position:relative; margin-bottom:12px; }
+.sel-ico { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:0.9rem; pointer-events:none; z-index:2; }
+.sel-lbl { position:absolute; top:-7px; left:46px; font-size:0.7rem; font-weight:600; color:var(--blue2); background:#0a0d1a; padding:0 4px; letter-spacing:0.02em; pointer-events:none; }
+.sel-arr { position:absolute; right:14px; top:50%; transform:translateY(-50%); color:var(--dim); font-size:0.7rem; pointer-events:none; }
+.sel-wrap select { width:100%; padding:13px 36px 13px 42px; background:rgba(255,255,255,0.04); border:1.5px solid var(--border); border-radius:13px; color:var(--text); font-family:var(--body); font-size:0.88rem; outline:none; appearance:none; cursor:pointer; transition:all 0.25s; }
+.sel-wrap select:focus { border-color:var(--blue2); background:rgba(59,127,255,0.06); box-shadow:0 0 0 4px rgba(59,127,255,0.1); }
+.sel-wrap select option { background:#0f1426; }
+.urg-label { font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue2); margin-bottom:8px; display:block; }
+.urg-row { display:flex; gap:8px; margin-bottom:12px; }
+.urg-btn { flex:1; padding:9px 0; border-radius:11px; border:1.5px solid var(--border); background:rgba(255,255,255,0.03); color:var(--muted); font-size:0.82rem; font-weight:600; cursor:pointer; text-align:center; transition:all 0.2s; font-family:var(--body); }
+.urg-btn:hover { border-color:var(--border2); color:var(--text); }
+.sel-ok{border-color:rgba(0,212,170,0.4)!important;background:rgba(0,212,170,0.09)!important;color:var(--teal)!important;}
+.sel-mid{border-color:rgba(255,179,64,0.4)!important;background:rgba(255,179,64,0.09)!important;color:var(--amber)!important;}
+.sel-urg{border-color:rgba(255,59,92,0.4)!important;background:rgba(255,59,92,0.09)!important;color:var(--red2)!important;}
+.sub-btn { width:100%; padding:14px; border:none; border-radius:13px; background:linear-gradient(135deg,var(--blue),var(--blue2)); color:#fff; font-family:var(--body); font-size:0.95rem; font-weight:700; cursor:pointer; letter-spacing:0.02em; position:relative; overflow:hidden; transition:transform 0.2s,box-shadow 0.2s; box-shadow:0 6px 24px rgba(59,127,255,0.35),inset 0 1px 0 rgba(255,255,255,0.15); margin-top:4px; }
+.sub-btn:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(59,127,255,0.45); }
+.sub-btn .ripple { position:absolute; border-radius:50%; background:rgba(255,255,255,0.25); transform:scale(0); animation:ripple 0.55s linear; pointer-events:none; }
+@keyframes ripple { to{transform:scale(4);opacity:0;} }
+
+/* INFO PANEL */
+.info-col { display:flex; flex-direction:column; gap:1rem; }
+.info-card { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:1.3rem 1.2rem; transition:border-color 0.25s; }
+.info-card:hover { border-color:var(--border2); }
+.ic-head { display:flex; align-items:center; gap:10px; margin-bottom:0.8rem; }
+.ic-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+.ici-b{background:rgba(59,127,255,0.12);} .ici-t{background:rgba(0,212,170,0.1);} .ici-r{background:rgba(255,59,92,0.1);} .ici-a{background:rgba(255,179,64,0.1);}
+.ic-title { font-size:0.88rem; font-weight:700; color:var(--text); }
+.ic-body { font-size:0.8rem; color:var(--muted); line-height:1.6; }
+.ic-body strong { color:var(--text); font-weight:600; }
+.hours-table { width:100%; border-collapse:collapse; }
+.hours-table td { padding:4px 0; font-size:0.78rem; color:var(--muted); }
+.hours-table td:last-child { text-align:right; color:var(--text); font-weight:600; font-size:0.78rem; }
+.hours-table tr:not(:last-child) td { border-bottom:1px solid rgba(255,255,255,0.04); }
+.live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--teal); margin-right:6px; box-shadow:0 0 6px var(--teal); animation:ldPulse 2s infinite; }
+@keyframes ldPulse { 0%,100%{box-shadow:0 0 6px var(--teal);} 50%{box-shadow:0 0 14px var(--teal);} }
+.auth-row { display:flex; gap:8px; margin-top:10px; }
+.auth-btn { flex:1; padding:10px; border-radius:11px; border:1px solid var(--border); background:rgba(255,255,255,0.04); color:var(--muted); font-size:0.82rem; font-weight:600; font-family:var(--body); cursor:pointer; text-align:center; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.auth-btn:hover { color:var(--text); background:var(--surface2); }
+.auth-btn.primary { background:linear-gradient(135deg,var(--red),var(--red2)); border-color:transparent; color:#fff; box-shadow:0 4px 16px rgba(255,59,92,0.3); }
+.auth-btn.primary:hover { box-shadow:0 8px 24px rgba(255,59,92,0.4); transform:translateY(-1px); }
+
+/* Auth-aware registration card */
+.logged-in-card { display:none; }
+.logged-in-card.show { display:block; }
+
+.toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px); background:rgba(10,13,26,0.95); border:1px solid var(--border2); color:var(--text); padding:12px 24px; border-radius:100px; font-size:0.87rem; font-family:var(--body); opacity:0; transition:all 0.3s; z-index:999; backdrop-filter:blur(16px); white-space:nowrap; box-shadow:0 8px 32px rgba(0,0,0,0.4); }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+@media (max-width:720px) { .main-row{grid-template-columns:1fr;} }
+@media (max-width:600px) { .contact-cards{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<div class="scene"></div>
+<div class="noise"></div>
+
+<nav>
+  <a href="nuur.html" class="nb">
+    <div class="bi">🛡️</div>
+    <span class="bn">Safe<em>School</em></span>
+  </a>
+  <div class="nav-actions">
+    <a href="nuur.html" class="nav-back">← Нүүр хуудас руу буцах</a>
+    <a href="newtreh.html" class="nav-btn nb-ghost" id="nav-login-btn">Нэвтрэх</a>
+    <div class="nav-user-pill" id="nav-user-pill">
+      <div class="nup-avatar" id="nav-avatar">?</div>
+      <span class="nup-name" id="nav-username">Хэрэглэгч</span>
+    </div>
+    <button class="nav-btn nb-logout" id="nav-logout-btn" onclick="doLogout()" style="display:none;">Гарах</button>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <div class="h-badge">📡 Дэмжлэг & Холбоо</div>
+    <h1 class="h-title">Бидэнтэй <span class="acc">холбогдоорой</span></h1>
+    <p class="h-sub">Та бидэнтэй дурын сувгаар холбогдож болно. Бид танд аль болох хурдан хариу өгнө.</p>
+  </div>
+
+  <div class="contact-cards">
+    <div class="cc cc-email"><span class="cc-icon">✉️</span><div class="cc-type cct-b">И-мэйл</div><div class="cc-main">info@safeschool.mn</div><div class="cc-desc">24 цагийн дотор хариу өгнө</div><a href="mailto:info@safeschool.mn" class="cc-link cl-b">Мэйл илгээх</a></div>
+    <div class="cc cc-phone"><span class="cc-icon">📞</span><div class="cc-type cct-t">Утас</div><div class="cc-main">1800-1234</div><div class="cc-desc">Үнэгүй дугаар — 7×24 цаг</div><a href="tel:18001234" class="cc-link cl-t">Залгах</a></div>
+    <div class="cc cc-chat"><span class="cc-icon">💬</span><div class="cc-type cct-a">Онлайн чат</div><div class="cc-main"><span class="live-dot"></span>Бодит цагийн дэмжлэг</div><div class="cc-desc">Одоо идэвхтэй байна</div><a href="#" class="cc-link cl-a" onclick="showToast('Чат нээгдэж байна... 💬');return false;">Чат эхлэх</a></div>
+  </div>
+
+  <div class="main-row">
+    <div class="form-panel">
+      <div class="fp-title">✍️ Мэдэгдэл илгээх</div>
+      <p class="fp-sub">Доорх маягтыг бөглөн мэдэгдлээ илгээнэ үү.</p>
+      <div class="field"><input type="text" id="fn" placeholder=" "/><span class="f-ico">👤</span><label for="fn">Таны нэр</label></div>
+      <div class="field"><input type="email" id="fe" placeholder=" "/><span class="f-ico">✉️</span><label for="fe">Имэйл хаяг</label></div>
+      <div class="field"><input type="tel" id="fp" placeholder=" "/><span class="f-ico">📱</span><label for="fp">Утасны дугаар (заавал биш)</label></div>
+      <div class="sel-wrap">
+        <span class="sel-ico">📋</span><span class="sel-lbl">Сэдэв</span>
+        <select id="ft"><option value="">Сэдвээ сонгоно уу</option><option>Аюулгүй байдлын асуудал</option><option>Сургуулийн дарамт (Bullying)</option><option>Сэтгэлзүйн тусламж</option><option>Техник дэмжлэг</option><option>Бусад</option></select>
+        <span class="sel-arr">▼</span>
+      </div>
+      <span class="urg-label">⚡ Яаралтай байдал</span>
+      <div class="urg-row">
+        <button class="urg-btn" onclick="selUrg(this,'sel-ok')">🟢 Энгийн</button>
+        <button class="urg-btn" onclick="selUrg(this,'sel-mid')">🟡 Дунд</button>
+        <button class="urg-btn" onclick="selUrg(this,'sel-urg')">🔴 Яаралтай</button>
+      </div>
+      <div class="field ta"><textarea id="fm" placeholder=" " rows="4"></textarea><span class="f-ico" style="top:14px;transform:none;">💬</span><label for="fm">Таны мэдэгдэл</label></div>
+      <button class="sub-btn" onclick="doRipple(event);submitForm()">Илгээх &nbsp;→</button>
+    </div>
+
+    <div class="info-col">
+      <div class="info-card">
+        <div class="ic-head"><div class="ic-icon ici-b">🕐</div><div class="ic-title">Ажлын цаг</div></div>
+        <div class="ic-body">
+          <table class="hours-table">
+            <tr><td>Даваа — Баасан</td><td>08:00 – 18:00</td></tr>
+            <tr><td>Бямба</td><td>09:00 – 14:00</td></tr>
+            <tr><td>Ням</td><td>Амарна</td></tr>
+            <tr><td>Яаралтай утас</td><td>24/7</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="ic-head"><div class="ic-icon ici-t">💬</div><div class="ic-title">Онлайн дэмжлэг</div></div>
+        <div class="ic-body"><span class="live-dot"></span><strong>Одоо идэвхтэй</strong> — Манай мэргэжилтнүүд таны асуултад бодит цагт хариулна.</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-head"><div class="ic-icon ici-r">📍</div><div class="ic-title">Байршил</div></div>
+        <div class="ic-body"><strong>Улаанбаатар хот</strong><br>Сүхбаатар дүүрэг, 1-р хороо<br>SafeSchool төв оффис</div>
+      </div>
+      <!-- Auth-aware card -->
+      <div class="info-card" id="auth-card-guest">
+        <div class="ic-head"><div class="ic-icon ici-a">🔑</div><div class="ic-title">Бүртгэл</div></div>
+        <div class="ic-body">Нэвтэрч орсноор мэдэгдлийнхээ явцыг хянаж болно.</div>
+        <div class="auth-row">
+          <a href="newtreh.html" class="auth-btn primary">Нэвтрэх</a>
+          <a href="newtreh.html" class="auth-btn">Бүртгүүлэх</a>
+        </div>
+      </div>
+      <div class="info-card" id="auth-card-loggedin" style="display:none;">
+        <div class="ic-head"><div class="ic-icon ici-a">✅</div><div class="ic-title">Нэвтэрсэн</div></div>
+        <div class="ic-body">Та амжилттай нэвтэрсэн байна. Мэдэгдлийнхээ явцыг хянах боломжтой.</div>
+        <div class="auth-row">
+          <button class="auth-btn primary" onclick="doLogout()">Гарах</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function initAuthNav() {
+  const loggedIn = sessionStorage.getItem('ss_loggedIn') === '1';
+  const email = sessionStorage.getItem('ss_email') || '';
+  const loginBtn = document.getElementById('nav-login-btn');
+  const logoutBtn = document.getElementById('nav-logout-btn');
+  const userPill = document.getElementById('nav-user-pill');
+  const guestCard = document.getElementById('auth-card-guest');
+  const loggedCard = document.getElementById('auth-card-loggedin');
+
+  if (loggedIn) {
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+    if (userPill) { userPill.classList.add('show'); document.getElementById('nav-avatar').textContent = email ? email[0].toUpperCase() : '?'; document.getElementById('nav-username').textContent = email.split('@')[0] || 'Хэрэглэгч'; }
+    if (guestCard) guestCard.style.display = 'none';
+    if (loggedCard) loggedCard.style.display = 'block';
+    // Pre-fill name field with email username
+    const nameField = document.getElementById('fn');
+    if (nameField && !nameField.value) nameField.value = email.split('@')[0] || '';
+    const emailField = document.getElementById('fe');
+    if (emailField && !emailField.value) emailField.value = email || '';
+  } else {
+    if (loginBtn) loginBtn.style.display = 'inline-flex';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (userPill) userPill.classList.remove('show');
+    if (guestCard) guestCard.style.display = 'block';
+    if (loggedCard) loggedCard.style.display = 'none';
+  }
+}
+function doLogout() { sessionStorage.removeItem('ss_loggedIn'); sessionStorage.removeItem('ss_email'); initAuthNav(); }
+initAuthNav();
+
+function selUrg(el,cls) { document.querySelectorAll('.urg-btn').forEach(b=>b.className='urg-btn'); el.classList.add(cls); }
+function submitForm() {
+  const name=document.getElementById('fn').value.trim();
+  const email=document.getElementById('fe').value.trim();
+  const msg=document.getElementById('fm').value.trim();
+  if (!name)  { showToast('Нэрээ оруулна уу! 👤'); return; }
+  if (!email) { showToast('Имэйлээ оруулна уу! ✉️'); return; }
+  if (!msg)   { showToast('Мэдэгдлээ бичнэ үү! 💬'); return; }
+  showToast('✅ Мэдэгдэл амжилттай илгээгдлээ!');
+  setTimeout(()=>{ ['fn','fe','fp','fm'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; }); document.getElementById('ft').selectedIndex=0; document.querySelectorAll('.urg-btn').forEach(b=>b.className='urg-btn'); },1000);
+}
+function doRipple(e) { const btn=e.currentTarget; const r=document.createElement('span'); r.className='ripple'; const rect=btn.getBoundingClientRect(); const s=Math.max(rect.width,rect.height); r.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px`; btn.appendChild(r); setTimeout(()=>r.remove(),600); }
+let tt;
+function showToast(msg) { const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>el.classList.remove('show'),2800); }
+</script>
+</body>
+</html>
